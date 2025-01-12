@@ -1,7 +1,7 @@
 # Rhythum
 
 ## Elevator Pitch
-Do you ever try and take a quick study break only to find yourself distracted over an hour later? Rhythum is a tool to help you log your study sessions, so you never get off track for too long.
+Do you ever try and take a quick study break only to find yourself distracted over an hour later? Rhythum is a tool to help you log your study sessions, so you understand where your time is going and stay on track.
 
 ## Key Features
 
