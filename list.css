@@ -1,0 +1,19 @@
+main {
+  margin: 1rem;
+}
+
+a:has(> .session-card) {
+  color: var(--bs-body-color);
+  text-decoration: none;
+}
+
+.session-card {
+  background-color: var(--card-color);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.session-card img {
+  border-radius: 6px;
+}

@@ -1,5 +1,9 @@
 * {
   --primary-color: #00b8a9;
+  --background-color: #222222;
+  /* --background-color: #f4f4f4; */
+  --card-color: #363535;
+  /* --card-color: #d4d4d4; */
 }
 
 body {
@@ -7,6 +11,7 @@ body {
   flex-direction: column;
   flex: 1;
   height: 100vh;
+  background-color: var(--background-color);
 }
 
 header {

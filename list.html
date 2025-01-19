@@ -13,6 +13,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="list.css" />
   </head>
   <body>
     <header>
@@ -36,16 +37,18 @@
       <!-- This is one of the places where you will see database data (this is also viewable in session.html) -->
       <h2>Current Sessions</h2>
       <a href="session.html">
-        11:26 am - Current &nbsp;
-        <img
-          src="summaryBar.png"
-          alt="Summary bar of a session"
-          height="30px"
-        />
+        <div class="session-card">
+          11:26 am - Current &nbsp;
+          <img
+            src="summaryBar.png"
+            alt="Summary bar of a session"
+            height="30px"
+          />
+        </div>
       </a>
 
       <h2>Past Sessions</h2>
-      <div>
+      <div class="session-card">
         <span>
           Jan 8, 2025 <br />
           2:45 pm - 5:11 pm
@@ -57,9 +60,7 @@
           height="30px"
         />
       </div>
-      <br />
-      <br />
-      <div>
+      <div class="session-card">
         <span>
           Jan 8, 2025 <br />
           10:28 am - 12:09 pm
