@@ -40,3 +40,15 @@ Wanting to stay on track while studying with a group of friends? You can join an
 
 ## Rhythum Design
 ![Rhythum Wireframe](rhythumWireframe.jpg)
+
+---
+
+## HTML deliverable
+In this deliverable I built the structure of Rhythum with HTML.
+
+- [x] HTML pages - I have a log in, sign up, list view, session view, and join session page, which represents all the pages for my website.
+- [x] Links - Each page has links to other pages so the overall flow of the site is similar to how it will be once it's done.
+- [x] Text - There is text for various headers, buttons, and links. There is also text for the notification and session date/time.
+- [x] Images - I have an image for the logo. I am also representing the blue summary bars as images for now.
+- [x] DB/Login - I have login and sign up pages which both have fields for inputting credentials. The session information will also be coming from the database.
+- [x] WebSocket - Clicking to start/finish a break or end a session will use WebSockets so other users can be in the same session as you.
