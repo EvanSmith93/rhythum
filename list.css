@@ -3,15 +3,29 @@ main {
 }
 
 a:has(> .session-card) {
+  display: block;
   color: var(--bs-body-color);
   text-decoration: none;
+  width: fit-content;
 }
 
 .session-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   background-color: var(--card-color);
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 16px;
+  width: fit-content;
+}
+
+.session-card:hover {
+  background-color: color-mix(in srgb, var(--card-color) 94%, black 6%);
+}
+
+.session-card div {
+  width: 180px;
 }
 
 .session-card img {
