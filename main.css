@@ -1,8 +1,25 @@
+* {
+  --primary-color: #00b8a9;
+}
+
 body {
   display: flex;
   flex-direction: column;
   flex: 1;
   height: 100vh;
+}
+
+header {
+  padding-top: 1rem;
+}
+
+header img {
+  margin-left: 1rem;
+}
+
+header h1 {
+  color: var(--primary-color);
+  font-size: 2.1rem;
 }
 
 main {
