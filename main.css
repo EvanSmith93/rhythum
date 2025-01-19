@@ -1,7 +1,17 @@
+body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+}
+
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: auto;
+  flex: 1;
 }
 
 form {
@@ -11,4 +21,11 @@ form {
   gap: 8px;
   width: 50%;
   align-items: center;
+}
+
+footer div {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1rem;
 }
