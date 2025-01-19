@@ -51,4 +51,5 @@ In this deliverable I built the structure of Rhythum with HTML.
 - [x] Text - There is text for various headers, buttons, and links. There is also text for the notification and session date/time.
 - [x] Images - I have an image for the logo. I am also representing the blue summary bars as images for now.
 - [x] DB/Login - I have login and sign up pages which both have fields for inputting credentials. The session information will also be coming from the database.
+- [x] 3rd Party Service - I have text representing a notification on the session view. The quote will come from a 3rd party API.
 - [x] WebSocket - Clicking to start/finish a break or end a session will use WebSockets so other users can be in the same session as you.
