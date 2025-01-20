@@ -2,6 +2,21 @@ main {
   margin: 1rem;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 !important;
+}
+
+menu {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 2rem;
+  margin-right: 1rem;
+  margin-top: 0;
+}
+
 a:has(> .session-card) {
   display: block;
   color: var(--bs-body-color);
