@@ -48,14 +48,18 @@
         <img
           src="summaryBar.png"
           alt="Summary bar of a session"
-          height="30px"
+          height="45px"
         />
 
         <!-- A WebSocket connection will go here, so other joined users can see when you start/finish a break or end the session -->
         <div>
-          <button class="btn btn-primary">Finish Break</button>
+          <button class="btn btn-primary" id="start-stop-break">
+            Finish Break
+          </button>
           <a href="list.html">
-            <button class="btn btn-primary">End Session</button>
+            <button class="btn btn-primary" id="end-session">
+              End Session
+            </button>
           </a>
         </div>
       </div>

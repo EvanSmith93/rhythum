@@ -6,6 +6,21 @@
   /* --card-color: #d4d4d4; */
 }
 
+.btn-primary,
+.bg-primary,
+.text-primary {
+  background-color: var(--primary-color) !important;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--primary-color) 90%,
+    black 10%
+  ) !important;
+}
+
 body {
   display: flex;
   flex-direction: column;

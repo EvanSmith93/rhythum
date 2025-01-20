@@ -26,6 +26,16 @@ main {
   height: 100%;
 }
 
+#center-content > div {
+  display: flex;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+#start-stop-break {
+  background-color: #6fa9dd !important;
+}
+
 #center-content h3 {
   margin-bottom: 0;
 }
