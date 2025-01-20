@@ -53,3 +53,13 @@ In this deliverable I built the structure of Rhythum with HTML.
 - [x] DB/Login - I have login and sign up pages which both have fields for inputting credentials. The session information will also be coming from the database.
 - [x] 3rd Party Service - I have text representing a notification on the session view. The quote will come from a 3rd party API.
 - [x] WebSocket - Clicking to start/finish a break or end a session will use WebSockets so other users can be in the same session as you.
+
+## CSS deliverable
+In this deliverable I styled the full HTML application using CSS and Bootstrap.
+
+- [x] Header, footer, and main content body - I have a properly styled header and footer, with the main content taking up most of the page.
+- [x] Navigation elements - I styled buttons with Bootstrap. I left the link navigation elements the same as I thought it looked best.
+- [x] Responsive to window resizing - Tested the full app with the iPhone SE size (portrait and landscape). I made adjustments to the list and session pages to align elements more vertically with smaller screen sizes.
+- [x] Application elements - Ensured good styling of elements overall, using both CSS and Bootstrap.
+- [x] Application text content - Chose a nice font from Google Fonts and applied it globally.
+- [x] Application images - Ensured images were properly aligned and had rounded corners.
