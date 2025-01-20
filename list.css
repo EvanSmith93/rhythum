@@ -1,20 +1,31 @@
-main {
-  margin: 1rem;
-}
-
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 !important;
+  margin-left: 1rem;
+}
+
+nav img {
+  margin-left: 0;
 }
 
 menu {
   display: flex !important;
   flex-direction: row !important;
   gap: 2rem;
+  margin-left: 1rem;
   margin-right: 1rem;
   margin-top: 0;
+  text-align: center;
+}
+
+main {
+  margin: 1rem;
+}
+
+#welcome {
+  margin-bottom: 0.5rem;
 }
 
 a:has(> .session-card) {

@@ -5,16 +5,15 @@ main {
 #session-code {
   position: absolute;
   left: 1rem;
-  top: 1rem;
 }
 
 #notification {
   position: absolute;
   right: 1rem;
-  top: 1rem;
   padding: 6px;
   border: 1px var(--bs-body-color) solid;
   border-radius: 8px;
+  max-width: 60%;
 }
 
 #center-content {
@@ -30,6 +29,10 @@ main {
   display: flex;
   gap: 12px;
   padding-top: 12px;
+}
+
+#center-content img {
+  max-width: 90%;
 }
 
 #start-stop-break {
