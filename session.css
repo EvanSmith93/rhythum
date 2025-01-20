@@ -2,18 +2,25 @@ main {
   position: relative;
 }
 
+#top-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 #session-code {
   position: absolute;
   left: 1rem;
+  max-width: 25%;
 }
 
 #notification {
   position: absolute;
   right: 1rem;
   padding: 6px;
-  border: 1px var(--bs-body-color) solid;
-  border-radius: 8px;
-  max-width: 60%;
+  max-width: 70%;
 }
 
 #center-content {
@@ -41,4 +48,5 @@ main {
 
 #center-content h3 {
   margin-bottom: 0;
+  margin-top: clamp(0px, calc(750px - 100vh), 150px);
 }
