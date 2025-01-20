@@ -25,32 +25,39 @@
     </header>
 
     <main>
-      <span>
+      <div id="session-code">
         <strong>Session Code</strong>
         <br />
         RTUJV
-      </span>
-      &nbsp;
+      </div>
+
       <!-- This is where the data from the third party API call will go (from zenquotes.io) -->
-      <p>
+      <p id="notification">
         You've been on break for 15 minutes. Ready to get back into it?
         <br />
-        Through discipline comes freedom.
-        <br />
-        -Aristotle
+        <i>
+          Through discipline comes freedom.
+          <br />
+          -Aristotle
+        </i>
       </p>
-      <br />
 
-      <h3>Currently Taking a Break</h3>
-      <p>11:26 am - Current</p>
-      <img src="summaryBar.png" alt="Summary bar of a session" height="30px" />
+      <div id="center-content">
+        <h3>Currently Taking a Break</h3>
+        <p>11:26 am - Current</p>
+        <img
+          src="summaryBar.png"
+          alt="Summary bar of a session"
+          height="30px"
+        />
 
-      <!-- A WebSocket connection will go here, so other joined users can see when you start/finish a break or end the session -->
-      <div>
-        <button class="btn btn-primary">Finish Break</button>
-        <a href="list.html">
-          <button class="btn btn-primary">End Session</button>
-        </a>
+        <!-- A WebSocket connection will go here, so other joined users can see when you start/finish a break or end the session -->
+        <div>
+          <button class="btn btn-primary">Finish Break</button>
+          <a href="list.html">
+            <button class="btn btn-primary">End Session</button>
+          </a>
+        </div>
       </div>
     </main>
 

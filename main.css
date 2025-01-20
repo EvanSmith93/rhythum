@@ -37,3 +37,7 @@ footer div {
   margin-right: auto;
   padding-bottom: 1rem;
 }
+
+img[src="summaryBar.png"] {
+  border-radius: 6px;
+}

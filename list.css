@@ -42,7 +42,3 @@ a:has(> .session-card) {
 .session-card div {
   width: 180px;
 }
-
-.session-card img {
-  border-radius: 6px;
-}
