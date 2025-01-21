@@ -57,4 +57,5 @@ footer div {
 
 img[src="summaryBar.png"] {
   border-radius: 6px;
+  border: 1px solid var(--bs-body-color);
 }

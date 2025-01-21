@@ -62,4 +62,4 @@ In this deliverable I styled the full HTML application using CSS and Bootstrap.
 - [x] Responsive to window resizing - Tested the full app with the iPhone SE size (portrait and landscape). I made adjustments to the list and session pages to align elements more vertically with smaller screen sizes.
 - [x] Application elements - Ensured good styling of elements overall, using both CSS and Bootstrap.
 - [x] Application text content - Chose a nice font from Google Fonts and applied it globally.
-- [x] Application images - Ensured images were properly aligned and had rounded corners.
+- [x] Application images - Ensured images were properly aligned and had rounded corners. Also added a border to summary bars.
