@@ -1,5 +1,5 @@
 import { Navbar } from "react-bootstrap";
-import logo from "../assets/logo.png";
+import logo from "../public/logo.png";
 import { ReactNode } from "react";
 
 export default function Header({ navbar }: { navbar?: ReactNode }) {

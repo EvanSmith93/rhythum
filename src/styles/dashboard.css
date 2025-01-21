@@ -20,5 +20,6 @@
 }
 
 .session-card div {
-  width: 180px;
+  width: 200px;
+  margin-right: 1rem;
 }
