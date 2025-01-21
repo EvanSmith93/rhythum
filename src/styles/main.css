@@ -55,7 +55,7 @@ footer div {
   padding-bottom: 1rem;
 }
 
-img[src="summaryBar.png"] {
+.summary-bar {
   border-radius: 6px;
   border: 1px solid var(--bs-body-color);
 }

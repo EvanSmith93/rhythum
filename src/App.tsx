@@ -5,6 +5,7 @@ import Register from "./pages/register";
 import JoinSession from "./pages/joinSession";
 import "./styles/main.css";
 import "./styles/form.css";
+import "./styles/list.css";
 import SessionList from "./pages/sessionList";
 
 function App() {
