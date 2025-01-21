@@ -1,4 +1,5 @@
 import summaryBar from "../assets/summaryBar.png";
+import SessionCard from "../components/sessionCard";
 
 export default function SessionList() {
   return (
@@ -19,18 +20,7 @@ export default function SessionList() {
       </a>
 
       <h2>Past Sessions</h2>
-      <div className="session-card">
-        <div>
-          Jan 8, 2025 <br />
-          2:45 pm - 5:11 pm
-        </div>
-        <img
-          className="summary-bar"
-          src={summaryBar}
-          alt="Summary bar of a session"
-          height="30px"
-        />
-      </div>
+      <SessionCard />
       <div className="session-card">
         <div>
           Jan 3, 2025 <br />
