@@ -1,5 +1,5 @@
 import { Image } from "react-bootstrap";
-import summaryBar from "../public/summaryBar.png";
+import summaryBar from "../assets/summaryBar.png";
 
 export default function SummaryBar({ height }: { height: string }) {
   return (
