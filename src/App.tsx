@@ -10,6 +10,7 @@ import "./styles/main.css";
 import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
+import Error404 from "./pages/404";
 
 function App() {
   return (
@@ -17,10 +18,10 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join-session" element={<JoinSession />} />
           <Route path="/sessions/:sessionId" element={<SessionDetail />} />
+          <Route path="*" element={<Error404 />} />
         </Route>
         <Route element={<Layout navbar={<DashboardNavbar />} />}>
           <Route path="/dashboard" element={<Dashboard />} />
