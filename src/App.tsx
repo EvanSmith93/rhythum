@@ -2,6 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import Layout from "./components/layout";
 import Register from "./pages/register";
+import JoinSession from "./pages/joinSession";
+import "./styles/main.css";
+import "./styles/form.css";
 
 function App() {
   return (
@@ -11,6 +14,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/join-session" element={<JoinSession />} />
         </Route>
       </Routes>
     </BrowserRouter>
