@@ -20,7 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join-session" element={<JoinSession />} />
-          <Route path="/session" element={<SessionDetail />} />
+          <Route path="/sessions/:sessionId" element={<SessionDetail />} />
         </Route>
         <Route element={<Layout navbar={<DashboardNavbar />} />}>
           <Route path="/dashboard" element={<Dashboard />} />

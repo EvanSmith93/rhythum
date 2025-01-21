@@ -1,8 +1,13 @@
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
+import { sessions } from "../utils/staticData";
 
 export default function SessionDetail() {
+  const { sessionId } = useParams();
+  const session = sessions.find((session) => session.id === sessionId);
+  console.log(session);
+
   return (
     <>
       <div id="top-section">
