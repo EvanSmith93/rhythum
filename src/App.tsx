@@ -6,7 +6,7 @@ import JoinSession from "./pages/joinSession";
 import "./styles/main.css";
 import "./styles/form.css";
 import "./styles/list.css";
-import Dashboard from "./pages/sessionList";
+import Dashboard from "./pages/dashboard";
 import DashboardNavbar from "./components/dashboardNavbar";
 
 function App() {
