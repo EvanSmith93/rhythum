@@ -2,11 +2,15 @@ import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { sessions } from "../utils/staticData";
+import { formatSessionTimes } from "../utils/helpers";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
   const session = sessions.find((session) => session.id === sessionId);
-  console.log(session);
+
+  if (!session) {
+    return <>Sorry! Could not find the session you are looking for.</>;
+  }
 
   return (
     <>
@@ -14,7 +18,7 @@ export default function SessionDetail() {
         <div id="session-code">
           <strong>Session Code</strong>
           <br />
-          RTUJV
+          {session.code}
         </div>
 
         <div id="notification" className="alert alert-warning">
@@ -30,7 +34,7 @@ export default function SessionDetail() {
 
       <div id="center-content">
         <h3>Currently Taking a Break</h3>
-        <p>11:26 am - Current</p>
+        <p>{formatSessionTimes(session)}</p>
         <SummaryBar height="45px" />
 
         <div>
