@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import summaryBar from "../assets/summaryBar.png";
 import { format } from "date-fns";
+import SummaryBar from "./summaryBar";
 
 export type Session = {
   startTime: Date;
@@ -18,12 +18,7 @@ export default function SessionCard({ session }: { session: Session }) {
         {formatDate(session.startTime)} -
         {session.endTime ? formatDate(session.endTime) : "Current"}
       </div>
-      <img
-        className="summary-bar"
-        src={summaryBar}
-        alt="Summary bar of a session"
-        height="30px"
-      />
+      <SummaryBar height="30px" />
     </Link>
   );
 }

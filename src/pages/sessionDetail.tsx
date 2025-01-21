@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
-import summaryBar from "../assets/summaryBar.png";
 import { Link } from "react-router-dom";
+import SummaryBar from "../components/summaryBar";
 
 export default function SessionDetail() {
   return (
@@ -26,12 +26,7 @@ export default function SessionDetail() {
       <div id="center-content">
         <h3>Currently Taking a Break</h3>
         <p>11:26 am - Current</p>
-        <img
-          className="summary-bar"
-          src={summaryBar}
-          alt="Summary bar of a session"
-          height="45px"
-        />
+        <SummaryBar height="45px" />
 
         <div>
           <Button id="start-stop-break">Finish Break</Button>
