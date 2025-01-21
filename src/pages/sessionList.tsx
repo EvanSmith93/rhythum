@@ -1,38 +1,37 @@
-import summaryBar from "../assets/summaryBar.png";
 import SessionCard from "../components/sessionCard";
 
 export default function SessionList() {
+  const sessions = [
+    {
+      startTime: new Date("2025-01-15T19:26:00.000Z"),
+      endTime: null,
+    },
+    {
+      startTime: new Date("2025-01-08T21:45:00.000Z"),
+      endTime: new Date("2025-01-09T00:11:00.000Z"),
+    },
+    {
+      startTime: new Date("2025-01-03T17:28:00.000Z"),
+      endTime: new Date("2025-01-03T19:09:00.000Z"),
+    },
+  ];
+
+  const currentSessions = sessions.filter((session) => !session.endTime);
+  const pastSessions = sessions.filter((session) => session.endTime);
+
   return (
     <>
       <p id="welcome">Welcome Cosmo!</p>
 
       <h2>Current Sessions</h2>
-      <a href="session.html">
-        <div className="session-card">
-          <div>11:26 am - Current</div>
-          <img
-            className="summary-bar"
-            src={summaryBar}
-            alt="Summary bar of a session"
-            height="30px"
-          />
-        </div>
-      </a>
+      {currentSessions.map((session) => (
+        <SessionCard session={session} />
+      ))}
 
       <h2>Past Sessions</h2>
-      <SessionCard />
-      <div className="session-card">
-        <div>
-          Jan 3, 2025 <br />
-          10:28 am - 12:09 pm
-        </div>
-        <img
-          className="summary-bar"
-          src={summaryBar}
-          alt="Summary bar of a session"
-          height="30px"
-        />
-      </div>
+      {pastSessions.map((session) => (
+        <SessionCard session={session} />
+      ))}
     </>
   );
 }
