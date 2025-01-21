@@ -1,4 +1,4 @@
-import "../styles/main.css";
+// import "../styles/main.css";
 import "../styles/form.css";
 import { Button, Form } from "react-bootstrap";
 
