@@ -1,12 +1,24 @@
 import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
-import { sessions } from "../utils/staticData";
 import { formatSessionTimes } from "../utils/helpers";
+import { useEffect, useState } from "react";
+import { Session } from "../utils/types";
+import { ClientDb } from "../services/clientDb";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
-  const session = sessions.find((session) => session.id === sessionId);
+  const [session, setSession] = useState<Session | undefined>();
+
+  useEffect(() => {
+    async function getSessions() {
+      const clientDb = new ClientDb();
+      const session = await clientDb.getSessionById("test", sessionId!);
+      setSession(session);
+    }
+
+    getSessions();
+  }, [sessionId]);
 
   if (!session) {
     return <>Sorry! Could not find the session you are looking for.</>;

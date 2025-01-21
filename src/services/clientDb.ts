@@ -1,7 +1,6 @@
-import { Session } from "./types";
+import { Session } from "../utils/types";
 
-// This is a temporary file. Once there's a backend/database this won't be needed.
-export const sessions: Session[] = [
+const sessions: Session[] = [
   {
     id: "2",
     startTime: new Date("2025-01-15T19:26:00.000Z"),
@@ -21,3 +20,15 @@ export const sessions: Session[] = [
     code: "PCJZW",
   },
 ];
+
+export class ClientDb {
+  async getSessions(userId: string) {
+    if (!userId) return;
+    return sessions;
+  }
+
+  async getSessionById(userId: string, sessionId: string) {
+    if (!userId) return;
+    return sessions.find((session) => session.id === sessionId);
+  }
+}

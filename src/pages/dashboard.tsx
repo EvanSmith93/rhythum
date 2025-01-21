@@ -1,10 +1,22 @@
+import { useEffect, useState } from "react";
 import SessionCard from "../components/sessionCard";
-import { sessions } from "../utils/staticData";
 import { Session } from "../utils/types";
+import { ClientDb } from "../services/clientDb";
 
 export default function Dashboard() {
-  const currentSessions = sessions.filter((session) => !session.endTime);
-  const pastSessions = sessions.filter((session) => session.endTime);
+  const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
+  const [pastSessions, setPastSessions] = useState<Session[]>([]);
+
+  useEffect(() => {
+    async function getSessions() {
+      const clientDb = new ClientDb();
+      const sessions = await clientDb.getSessions("test");
+      setCurrentSessions(sessions?.filter((session) => !session.endTime) ?? []);
+      setPastSessions(sessions?.filter((session) => session.endTime) ?? []);
+    }
+
+    getSessions();
+  }, []);
 
   return (
     <>
@@ -20,7 +32,5 @@ export default function Dashboard() {
 }
 
 function SessionList({ sessions }: { sessions: Session[] }) {
-  return sessions.map((session) => (
-    <SessionCard session={session} />
-  ));
+  return sessions.map((session) => <SessionCard session={session} />);
 }
