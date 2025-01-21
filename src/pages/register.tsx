@@ -10,7 +10,7 @@ export default function Register() {
         <Form.Control type="text" placeholder="name" />
         <Form.Control type="email" placeholder="email" />
         <Form.Control type="password" placeholder="password" />
-        <Link to="/session-list">
+        <Link to="/dashboard">
           <Button>Sign Up</Button>
         </Link>
         <Link to="/">Have an account? Log in.</Link>

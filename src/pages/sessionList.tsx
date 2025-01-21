@@ -1,6 +1,6 @@
 import SessionCard from "../components/sessionCard";
 
-export default function SessionList() {
+export default function Dashboard() {
   const sessions = [
     {
       startTime: new Date("2025-01-15T19:26:00.000Z"),

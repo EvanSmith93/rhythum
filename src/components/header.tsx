@@ -1,12 +1,17 @@
-import logo from '../assets/logo.png';
+import { Navbar } from "react-bootstrap";
+import logo from "../assets/logo.png";
+import { ReactNode } from "react";
 
-export default function Header() {
+export default function Header({ navbar }: { navbar?: ReactNode }) {
   return (
     <header>
-      <h1>
-        <img src={logo} width="46px" alt="Rhythum Logo" />
-        Rhythum
-      </h1>
+      <Navbar className="p-0 ms-4">
+        <Navbar.Brand className="navbar-brand" href="/">
+          <img src={logo} width="46px" alt="Rhythum Logo" />
+          Rhythum
+        </Navbar.Brand>
+        {navbar}
+      </Navbar>
       <hr />
     </header>
   );

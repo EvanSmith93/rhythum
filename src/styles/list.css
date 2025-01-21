@@ -1,28 +1,5 @@
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 !important;
-  margin-left: 1rem;
-}
-
-nav img {
-  margin-left: 0;
-}
-
-main {
-  margin: 1rem;
-}
-
 #welcome {
   margin-bottom: 0.5rem;
-}
-
-a:has(> .session-card) {
-  display: block;
-  color: var(--bs-body-color);
-  text-decoration: none;
-  width: fit-content;
 }
 
 .session-card {
@@ -34,6 +11,8 @@ a:has(> .session-card) {
   border-radius: 8px;
   margin-bottom: 16px;
   width: fit-content;
+  text-decoration: none;
+  color: inherit;
 }
 
 .session-card:hover {

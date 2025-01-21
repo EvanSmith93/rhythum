@@ -13,19 +13,17 @@ export default function SessionCard({ session }: { session: Session }) {
   }
 
   return (
-    <Link to="/session">
-      <div className="session-card">
-        <div>
-          {formatDate(session.startTime)} -
-          {session.endTime ? formatDate(session.endTime) : "Current"}
-        </div>
-        <img
-          className="summary-bar"
-          src={summaryBar}
-          alt="Summary bar of a session"
-          height="30px"
-        />
+    <Link to="/session" className="session-card">
+      <div>
+        {formatDate(session.startTime)} -
+        {session.endTime ? formatDate(session.endTime) : "Current"}
       </div>
+      <img
+        className="summary-bar"
+        src={summaryBar}
+        alt="Summary bar of a session"
+        height="30px"
+      />
     </Link>
   );
 }

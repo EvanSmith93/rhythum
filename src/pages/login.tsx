@@ -9,7 +9,7 @@ export default function Login() {
       <Form>
         <Form.Control type="email" placeholder="email" />
         <Form.Control type="password" placeholder="password" />
-        <Link to="/session-list">
+        <Link to="/dashboard">
           <Button>Log In</Button>
         </Link>
         <Link to="/register">New? Sign up.</Link>

@@ -6,7 +6,8 @@ import JoinSession from "./pages/joinSession";
 import "./styles/main.css";
 import "./styles/form.css";
 import "./styles/list.css";
-import SessionList from "./pages/sessionList";
+import Dashboard from "./pages/sessionList";
+import DashboardNavbar from "./components/dashboardNavbar";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join-session" element={<JoinSession />} />
-          <Route path="/session-list" element={<SessionList />} />
+        </Route>
+        <Route element={<Layout navbar={<DashboardNavbar />} />}>
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
