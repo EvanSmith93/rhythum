@@ -6,10 +6,12 @@ export default function Login() {
   return (
     <Center>
       <h3>Log In</h3>
-      <Form method="get" action="list.html">
+      <Form>
         <Form.Control type="email" placeholder="email" />
         <Form.Control type="password" placeholder="password" />
-        <Button type="submit">Log In</Button>
+        <Link to="/session-list">
+          <Button>Log In</Button>
+        </Link>
         <Link to="/register">New? Sign up.</Link>
       </Form>
     </Center>
