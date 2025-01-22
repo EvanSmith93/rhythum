@@ -3,21 +3,27 @@ import { Session } from "../utils/types";
 const sessions: Session[] = [
   {
     id: "2",
-    startTime: new Date("2025-01-15T19:26:00.000Z"),
-    endTime: null,
     code: "RTUJV",
+    activityChanges: [new Date("2025-01-15T19:26:00.000Z")],
+    hasEnded: false,
   },
   {
     id: "1",
-    startTime: new Date("2025-01-08T21:45:00.000Z"),
-    endTime: new Date("2025-01-09T00:11:00.000Z"),
     code: "UQBLA",
+    activityChanges: [
+      new Date("2025-01-08T21:45:00.000Z"),
+      new Date("2025-01-09T00:11:00.000Z"),
+    ],
+    hasEnded: true,
   },
   {
     id: "0",
-    startTime: new Date("2025-01-03T17:28:00.000Z"),
-    endTime: new Date("2025-01-03T19:09:00.000Z"),
     code: "PCJZW",
+    activityChanges: [
+      new Date("2025-01-03T17:28:00.000Z"),
+      new Date("2025-01-03T19:09:00.000Z"),
+    ],
+    hasEnded: true,
   },
 ];
 

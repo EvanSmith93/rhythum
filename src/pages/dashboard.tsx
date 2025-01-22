@@ -11,8 +11,8 @@ export default function Dashboard() {
     async function getSessions() {
       const clientDb = new ClientDb();
       const sessions = await clientDb.getSessions("test");
-      setCurrentSessions(sessions?.filter((session) => !session.endTime) ?? []);
-      setPastSessions(sessions?.filter((session) => session.endTime) ?? []);
+      setCurrentSessions(sessions?.filter((session) => !session.hasEnded) ?? []);
+      setPastSessions(sessions?.filter((session) => session.hasEnded) ?? []);
     }
 
     getSessions();
