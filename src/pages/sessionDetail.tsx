@@ -48,7 +48,7 @@ export default function SessionDetail() {
       <div id="center-content">
         <h3>{onBreak ? "Currently Taking a Break" : "Currently Studying"}</h3>
         <p>{formatSessionTimes(session)}</p>
-        <SummaryBar height="45px" />
+        <SummaryBar session={session} width={550} height={45} />
 
         <div>
           <Button

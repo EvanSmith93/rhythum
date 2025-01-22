@@ -11,7 +11,9 @@ export default function Dashboard() {
     async function getSessions() {
       const clientDb = new ClientDb();
       const sessions = await clientDb.getSessions("test");
-      setCurrentSessions(sessions?.filter((session) => !session.hasEnded) ?? []);
+      setCurrentSessions(
+        sessions?.filter((session) => !session.hasEnded) ?? []
+      );
       setPastSessions(sessions?.filter((session) => session.hasEnded) ?? []);
     }
 
@@ -32,5 +34,7 @@ export default function Dashboard() {
 }
 
 function SessionList({ sessions }: { sessions: Session[] }) {
-  return sessions.map((session) => <SessionCard session={session} />);
+  return sessions.map((session, index) => (
+    <SessionCard key={index} session={session} />
+  ));
 }

@@ -7,7 +7,7 @@ export default function SessionCard({ session }: { session: Session }) {
   return (
     <Link to={`/sessions/${session.id}`} className="session-card">
       <div>{formatSessionTimes(session)}</div>
-      <SummaryBar height="30px" />
+      <SummaryBar session={session} width={200} height={30} />
     </Link>
   );
 }

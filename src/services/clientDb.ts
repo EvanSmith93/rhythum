@@ -4,7 +4,12 @@ const sessions: Session[] = [
   {
     id: "2",
     code: "RTUJV",
-    activityChanges: [new Date("2025-01-15T19:26:00.000Z")],
+    activityChanges: [
+      new Date("2025-01-22T06:58:00.000Z"),
+      new Date("2025-01-22T06:58:30.000Z"),
+      new Date("2025-01-22T06:59:00.000Z"),
+      new Date("2025-01-22T07:03:00.000Z"),
+    ],
     hasEnded: false,
   },
   {
@@ -12,6 +17,7 @@ const sessions: Session[] = [
     code: "UQBLA",
     activityChanges: [
       new Date("2025-01-08T21:45:00.000Z"),
+      new Date("2025-01-08T22:31:00.000Z"),
       new Date("2025-01-09T00:11:00.000Z"),
     ],
     hasEnded: true,
@@ -21,6 +27,10 @@ const sessions: Session[] = [
     code: "PCJZW",
     activityChanges: [
       new Date("2025-01-03T17:28:00.000Z"),
+      new Date("2025-01-03T17:35:00.000Z"),
+      new Date("2025-01-03T17:47:00.000Z"),
+      new Date("2025-01-03T18:33:00.000Z"),
+      new Date("2025-01-03T18:55:00.000Z"),
       new Date("2025-01-03T19:09:00.000Z"),
     ],
     hasEnded: true,
