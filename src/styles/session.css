@@ -38,8 +38,12 @@
   max-width: 90%;
 }
 
-#start-stop-break {
+.light-blue, .light-blue:hover {
   background-color: #6fa9dd !important;
+}
+
+.dark-blue, .dark-blue:hover {
+  background-color: #095393 !important;
 }
 
 #center-content h3 {

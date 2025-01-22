@@ -9,6 +9,7 @@ import { ClientDb } from "../services/clientDb";
 export default function SessionDetail() {
   const { sessionId } = useParams();
   const [session, setSession] = useState<Session | undefined>();
+  const [onBreak, setOnBreak] = useState(false);
 
   useEffect(() => {
     async function getSessions() {
@@ -45,12 +46,17 @@ export default function SessionDetail() {
       </div>
 
       <div id="center-content">
-        <h3>Currently Taking a Break</h3>
+        <h3>{onBreak ? "Currently Taking a Break" : "Currently Studying"}</h3>
         <p>{formatSessionTimes(session)}</p>
         <SummaryBar height="45px" />
 
         <div>
-          <Button id="start-stop-break">Finish Break</Button>
+          <Button
+            className={onBreak ? "light-blue" : "dark-blue"}
+            onClick={() => setOnBreak(!onBreak)}
+          >
+            {onBreak ? "Finish Break" : "Start Break"}
+          </Button>
           <Link to="/dashboard">
             <Button id="end-session">End Session</Button>
           </Link>
