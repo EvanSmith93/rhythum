@@ -47,4 +47,9 @@ export class ClientDb {
     if (!userId) return;
     return sessions.find((session) => session.id === sessionId);
   }
+
+  async getSessionByCode(userId: string, code: string) {
+    if (!userId) return;
+    return sessions.find((session) => session.code === code);
+  }
 }
