@@ -3,19 +3,20 @@ import { Link, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { formatSessionTimes } from "../utils/helpers";
 import { useEffect, useState } from "react";
-import { Session } from "../utils/types";
+import { Quote, Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
   const [session, setSession] = useState<Session | undefined>();
   const [onBreak, setOnBreak] = useState(false);
+  const [quote, setQuote] = useState<Quote | undefined>();
 
   useEffect(() => {
     async function getSessions() {
       const clientDb = new ClientDb();
-      const session = await clientDb.getSessionById("test", sessionId!);
-      setSession(session);
+      setSession(await clientDb.getSessionById("test", sessionId!));
+      setQuote(await clientDb.getRandomQuote());
     }
 
     getSessions();
@@ -38,9 +39,8 @@ export default function SessionDetail() {
           You've been on break for 15 minutes. Ready to get back into it?
           <br />
           <i>
-            Through discipline comes freedom.
-            <br />
-            -Aristotle
+            {quote?.text}
+            <br />-{quote?.author}
           </i>
         </div>
       </div>

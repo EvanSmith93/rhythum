@@ -1,4 +1,4 @@
-import { Session } from "../utils/types";
+import { Quote, Session } from "../utils/types";
 
 const sessions: Session[] = [
   {
@@ -37,6 +37,29 @@ const sessions: Session[] = [
   },
 ];
 
+const quotes: Quote[] = [
+  {
+    text: "Through discipline comes freedom.",
+    author: "Aristotle",
+  },
+  {
+    text: "Question everything. Learn something. Answer nothing.",
+    author: "Euripides",
+  },
+  {
+    text: "True life is lived when tiny changes occur.",
+    author: "Leo Tolstoy",
+  },
+  {
+    text: "Some people don't like change, but you need to embrace change if the alternative is disaster.",
+    author: "Elon Musk",
+  },
+  {
+    text: "If you don't know where you're going, you will probably end up somewhere else.",
+    author: "Laurence J. Peter",
+  },
+];
+
 export class ClientDb {
   async getSessions(userId: string) {
     if (!userId) return;
@@ -51,5 +74,10 @@ export class ClientDb {
   async getSessionByCode(userId: string, code: string) {
     if (!userId) return;
     return sessions.find((session) => session.code === code);
+  }
+
+  async getRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    return quotes[randomIndex];
   }
 }
