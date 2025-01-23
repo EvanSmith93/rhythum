@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Session } from "../utils/types";
-import { differenceInSeconds } from "date-fns";
+import {
+  calculateSessionTimeLengths,
+  calculateTotalSessionTime,
+} from "../utils/helpers";
 
 export default function SummaryBar({
   session,
@@ -14,34 +17,20 @@ export default function SummaryBar({
   const [timeLengths, setTimeLengths] = useState<number[]>();
 
   const totalTime = useMemo(
-    () => timeLengths?.reduce((val, total) => total + val, 0) ?? 0,
-    [timeLengths]
+    () => calculateTotalSessionTime(session),
+    [session]
   );
 
   useEffect(() => {
     function updateTimeLengths() {
-      const changes = !session.hasEnded
-        ? [...session.activityChanges, new Date()]
-        : session.activityChanges;
-
-      const timeLengths = changes
-        .map((change, index) => {
-          if (index === changes.length - 1) {
-            return 0;
-          }
-          return differenceInSeconds(changes[index + 1], change);
-        })
-        .slice(0, -1);
-
-      setTimeLengths(timeLengths);
+      setTimeLengths(calculateSessionTimeLengths(session));
     }
 
     updateTimeLengths();
-
     if (!session.hasEnded) {
       setInterval(updateTimeLengths, 10 * 1000);
     }
-  }, [session.activityChanges, session.hasEnded]);
+  }, [session]);
 
   return (
     <div
