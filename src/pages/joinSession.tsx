@@ -41,7 +41,9 @@ export default function JoinSession() {
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
           />
-          <Button onClick={onSubmit}>Join</Button>
+          <Button onClick={onSubmit} disabled={code.length < 5}>
+            Join
+          </Button>
         </Form>
       </Center>
     </>

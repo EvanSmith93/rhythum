@@ -7,8 +7,8 @@ export default function Register() {
     <Center>
       <h3>Sign Up</h3>
       <Form>
-        <Form.Control type="text" placeholder="name" />
         <Form.Control type="email" placeholder="email" />
+        <Form.Control type="text" placeholder="username" />
         <Form.Control type="password" placeholder="password" />
         <Link to="/dashboard">
           <Button>Sign Up</Button>
