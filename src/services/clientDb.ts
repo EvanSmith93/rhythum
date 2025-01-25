@@ -1,6 +1,7 @@
 import { Quote, Session } from "../utils/types";
+import { LSHandler, Schema } from "./LSHandler";
 
-const sessions: Session[] = [
+const defaultSessions: Session[] = [
   {
     id: "2",
     code: "RTUJV",
@@ -60,19 +61,25 @@ const quotes: Quote[] = [
   },
 ];
 
+new LSHandler().setItem(Schema.Sessions, defaultSessions);
+
 export class ClientDb {
+  LSHandler = new LSHandler();
+
   async getSessions(userId: string) {
     if (!userId) return;
-    return sessions;
+    return this.LSHandler.getItem(Schema.Sessions);
   }
 
   async getSessionById(userId: string, sessionId: string) {
     if (!userId) return;
+    const sessions = this.LSHandler.getItem(Schema.Sessions);
     return sessions.find((session) => session.id === sessionId);
   }
 
   async getSessionByCode(userId: string, code: string) {
     if (!userId) return;
+    const sessions = this.LSHandler.getItem(Schema.Sessions);
     return sessions.find((session) => session.code === code);
   }
 
