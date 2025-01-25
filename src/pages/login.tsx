@@ -28,14 +28,12 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        <Link to="/dashboard">
-          <Button
-            type="submit"
-            disabled={username.length < 3 || password.length < 3}
-          >
-            Log In
-          </Button>
-        </Link>
+        <Button
+          type="submit"
+          disabled={username.length < 3 || password.length < 3}
+        >
+          Log In
+        </Button>
         <Link to="/register">New? Sign up.</Link>
       </Form>
     </Center>
