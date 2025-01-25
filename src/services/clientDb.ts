@@ -61,26 +61,37 @@ const quotes: Quote[] = [
   },
 ];
 
-new LSHandler().setItem(Schema.Sessions, defaultSessions);
+if (!localStorage.getItem("initialized")) {
+  new LSHandler().setItems(Schema.Sessions, defaultSessions);
+  localStorage.setItem("initialized", "true");
+}
 
 export class ClientDb {
   LSHandler = new LSHandler();
 
   async getSessions(userId: string) {
     if (!userId) return;
-    return this.LSHandler.getItem(Schema.Sessions);
+    return this.LSHandler.getItems(Schema.Sessions);
   }
 
   async getSessionById(userId: string, sessionId: string) {
     if (!userId) return;
-    const sessions = this.LSHandler.getItem(Schema.Sessions);
+    const sessions = (await this.getSessions(userId))!;
     return sessions.find((session) => session.id === sessionId);
   }
 
   async getSessionByCode(userId: string, code: string) {
     if (!userId) return;
-    const sessions = this.LSHandler.getItem(Schema.Sessions);
+    const sessions = (await this.getSessions(userId))!;
     return sessions.find((session) => session.code === code);
+  }
+
+  async endSession(userId: string, sessionId: string) {
+    if (!userId) return;
+    const session = (await this.getSessionById(userId, sessionId))!;
+    session.hasEnded = true;
+    session.activityChanges.push(new Date());
+    this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
   async getRandomQuote() {

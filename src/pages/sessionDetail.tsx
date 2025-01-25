@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { formatSessionTimes } from "../utils/helpers";
 import { useEffect, useState } from "react";
@@ -8,9 +8,16 @@ import { ClientDb } from "../services/clientDb";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
+  const navigate = useNavigate();
   const [session, setSession] = useState<Session | undefined>();
   const [onBreak, setOnBreak] = useState(false);
   const [quote, setQuote] = useState<Quote | undefined>();
+
+  function endSession() {
+    const clientDb = new ClientDb();
+    clientDb.endSession("test", sessionId!);
+    navigate("/dashboard");
+  }
 
   useEffect(() => {
     async function getSessions() {
@@ -57,9 +64,9 @@ export default function SessionDetail() {
           >
             {onBreak ? "Finish Break" : "Start Break"}
           </Button>
-          <Link to="/dashboard">
-            <Button id="end-session">End Session</Button>
-          </Link>
+          <Button id="end-session" onClick={endSession}>
+            End Session
+          </Button>
         </div>
       </div>
     </>

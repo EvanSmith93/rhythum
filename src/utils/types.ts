@@ -6,6 +6,7 @@ export type Session = {
 };
 
 export type User = {
+  id: string;
   email: string;
   username: string;
   passwordHash: string;

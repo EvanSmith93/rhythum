@@ -13,11 +13,23 @@ type SchemaMapping = {
 type SchemaType<T extends Schema> = SchemaMapping[T];
 
 export class LSHandler {
-  setItem<T extends Schema>(key: T, items: SchemaType<T>[]) {
+  setItems<T extends Schema>(key: T, items: SchemaType<T>[]) {
     localStorage.setItem(key, JSON.stringify(items));
   }
 
-  getItem<T extends Schema>(key: T): SchemaType<T>[] {
+  getItems<T extends Schema>(key: T): SchemaType<T>[] {
     return JSON.parse(localStorage.getItem(key) || "[]") || [];
+  }
+
+  addItem<T extends Schema>(key: T, item: SchemaType<T>) {
+    const items = this.getItems(key);
+    items.push(item);
+    this.setItems(key, items);
+  }
+
+  updateItem<T extends Schema>(key: T, item: SchemaType<T>) {
+    const items = this.getItems(key).filter((i) => i.id !== item.id);
+    items.push(item);
+    this.setItems(key, items);
   }
 }
