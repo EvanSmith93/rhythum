@@ -1,9 +1,11 @@
+import { generateCode } from "../utils/helpers";
 import { Quote, Session } from "../utils/types";
 import { LSHandler, Schema } from "./LSHandler";
+import { v4 as uuidv4 } from "uuid";
 
 const defaultSessions: Session[] = [
   {
-    id: "2",
+    id: uuidv4(),
     code: "RTUJV",
     activityChanges: [
       new Date("2025-01-22T06:58:00.000Z"),
@@ -14,7 +16,7 @@ const defaultSessions: Session[] = [
     hasEnded: false,
   },
   {
-    id: "1",
+    id: uuidv4(),
     code: "UQBLA",
     activityChanges: [
       new Date("2025-01-08T21:45:00.000Z"),
@@ -24,7 +26,7 @@ const defaultSessions: Session[] = [
     hasEnded: true,
   },
   {
-    id: "0",
+    id: uuidv4(),
     code: "PCJZW",
     activityChanges: [
       new Date("2025-01-03T17:28:00.000Z"),
@@ -84,6 +86,17 @@ export class ClientDb {
     if (!userId) return;
     const sessions = (await this.getSessions(userId))!;
     return sessions.find((session) => session.code === code);
+  }
+
+  async startSession(userId: string) {
+    if (!userId) return;
+    const newSession: Session = {
+      id: uuidv4(),
+      code: generateCode(),
+      activityChanges: [new Date()],
+      hasEnded: false,
+    };
+    return this.LSHandler.addItem(Schema.Sessions, newSession);
   }
 
   async endSession(userId: string, sessionId: string) {

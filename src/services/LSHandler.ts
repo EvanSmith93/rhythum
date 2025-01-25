@@ -25,6 +25,7 @@ export class LSHandler {
     const items = this.getItems(key);
     items.push(item);
     this.setItems(key, items);
+    return item;
   }
 
   updateItem<T extends Schema>(key: T, item: SchemaType<T>) {

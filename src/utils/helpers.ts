@@ -36,3 +36,16 @@ export function calculateTotalSessionTime(session: Session) {
     session.activityChanges[0]
   );
 }
+
+export function generateCode() {
+  const asciiMin = 65;
+  const asciiMax = 91;
+
+  const chars = [...Array(5).keys()].map(() => {
+    const asciiChar =
+      asciiMin + Math.floor(Math.random() * (asciiMax - asciiMin));
+    return String.fromCharCode(asciiChar);
+  });
+
+  return chars.join("");
+}
