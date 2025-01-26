@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 const defaultSessions: Session[] = [
   {
     id: uuidv4(),
-    code: "RTUJV",
+    code: generateCode(),
     activityChanges: [
       new Date("2025-01-22T06:58:00.000Z"),
       new Date("2025-01-22T06:58:30.000Z"),
@@ -17,7 +17,7 @@ const defaultSessions: Session[] = [
   },
   {
     id: uuidv4(),
-    code: "UQBLA",
+    code: generateCode(),
     activityChanges: [
       new Date("2025-01-08T21:45:00.000Z"),
       new Date("2025-01-08T22:31:00.000Z"),
@@ -27,7 +27,7 @@ const defaultSessions: Session[] = [
   },
   {
     id: uuidv4(),
-    code: "PCJZW",
+    code: generateCode(),
     activityChanges: [
       new Date("2025-01-03T17:28:00.000Z"),
       new Date("2025-01-03T17:35:00.000Z"),
@@ -97,6 +97,13 @@ export class ClientDb {
       hasEnded: false,
     };
     return this.LSHandler.addItem(Schema.Sessions, newSession);
+  }
+
+  async toggleBreak(userId: string, sessionId: string) {
+    if (!userId) return;
+    const session = (await this.getSessionById(userId, sessionId))!;
+    session.activityChanges.push(new Date());
+    this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
   async endSession(userId: string, sessionId: string) {

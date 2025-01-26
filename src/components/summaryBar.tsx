@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Session } from "../utils/types";
 import {
   calculateSessionTimeLengths,
@@ -16,20 +16,16 @@ export default function SummaryBar({
 }) {
   const [timeLengths, setTimeLengths] = useState<number[]>();
 
-  const totalTime = useMemo(
-    () => calculateTotalSessionTime(session),
-    [session]
-  );
-
   useEffect(() => {
     function updateTimeLengths() {
       setTimeLengths(calculateSessionTimeLengths(session));
     }
-
     updateTimeLengths();
-    if (!session.hasEnded) {
-      setInterval(updateTimeLengths, 10 * 1000);
-    }
+
+    if (session.hasEnded) return;
+    const intervalId = setInterval(updateTimeLengths, 1000);
+
+    return () => clearInterval(intervalId);
   }, [session]);
 
   return (
@@ -46,7 +42,7 @@ export default function SummaryBar({
             index % 2 === 0 ? "dark-blue" : "light-blue"
           }`}
           style={{
-            width: (interval / totalTime) * width,
+            width: (interval / calculateTotalSessionTime(session)) * width,
             height: `${height}px`,
           }}
         ></span>
