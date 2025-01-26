@@ -25,10 +25,18 @@ export default function Dashboard() {
       <p id="welcome">Welcome Cosmo!</p>
 
       <h2>Current Sessions</h2>
-      <SessionList sessions={currentSessions} />
+      {currentSessions.length ? (
+        <SessionList sessions={currentSessions} />
+      ) : (
+        <p className="text-secondary">No Current Sessions</p>
+      )}
 
       <h2>Past Sessions</h2>
-      <SessionList sessions={pastSessions} />
+      {pastSessions.length ? (
+        <SessionList sessions={pastSessions} />
+      ) : (
+        <p className="text-secondary">No Past Sessions</p>
+      )}
     </>
   );
 }

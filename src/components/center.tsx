@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
-import { Container } from "react-bootstrap";
 
 export default function Center({ children }: { children: ReactNode }) {
   return (
-    <Container className="d-flex flex-column justify-content-center align-items-center h-100">
+    <div
+      className="d-flex flex-column justify-content-center align-items-center"
+      style={{ minHeight: `calc(100vh - 14rem)` }}
+    >
       {children}
-    </Container>
+    </div>
   );
 }

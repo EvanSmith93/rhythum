@@ -26,8 +26,7 @@
 #layout {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--background-color);
 }
 
@@ -35,7 +34,8 @@ header {
   padding-top: 1rem;
 }
 
-.navbar-brand, .navbar-brand:hover {
+.navbar-brand,
+.navbar-brand:hover {
   color: var(--primary-color);
   font-size: 2.1rem;
 }
@@ -50,9 +50,4 @@ footer div {
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 1rem;
-}
-
-.summary-bar {
-  border-radius: 6px;
-  border: 1px solid var(--bs-body-color);
 }
