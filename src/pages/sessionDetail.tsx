@@ -1,12 +1,12 @@
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
-import { formatSessionTimes } from "../utils/helpers";
 import { useEffect, useMemo, useState } from "react";
 import { Quote, Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
+import SessionTimes from "../components/sessionTimes";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
@@ -92,7 +92,7 @@ export default function SessionDetail() {
 
       <div id="center-content">
         <h3>{summaryText}</h3>
-        <p>{formatSessionTimes(session)}</p>
+        <SessionTimes session={session} />
         <SummaryBar session={session} width={550} height={45} />
 
         {!session.hasEnded && (

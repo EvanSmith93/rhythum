@@ -19,7 +19,8 @@
   background-color: color-mix(in srgb, var(--card-color) 94%, black 6%);
 }
 
-.session-card div {
+.session-card p {
   width: 200px;
   margin-right: 1rem;
+  margin-bottom: 0;
 }
