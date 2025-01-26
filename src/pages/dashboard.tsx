@@ -17,9 +17,11 @@ export default function Dashboard() {
 
       const sessions = await db.getSessions();
       setCurrentSessions(
-        sessions?.filter((session) => !session.hasEnded) ?? []
+        sessions?.filter((session) => !session.hasEnded).reverse() ?? []
       );
-      setPastSessions(sessions?.filter((session) => session.hasEnded) ?? []);
+      setPastSessions(
+        sessions?.filter((session) => session.hasEnded).reverse() ?? []
+      );
     }
 
     getData();
