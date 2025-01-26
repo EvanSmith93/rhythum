@@ -1,5 +1,5 @@
 import { generateCode } from "../utils/helpers";
-import { Quote, Session } from "../utils/types";
+import { Quote, Session, User } from "../utils/types";
 import { LSHandler, Schema } from "./LSHandler";
 import { v4 as uuidv4 } from "uuid";
 
@@ -71,25 +71,25 @@ if (!localStorage.getItem("initialized")) {
 export class ClientDb {
   LSHandler = new LSHandler();
 
-  async getSessions(userId: string) {
-    if (!userId) return;
+  async getSessions() {
+    if (!(await this.getCurrentUser())) return;
     return this.LSHandler.getItems(Schema.Sessions);
   }
 
-  async getSessionById(userId: string, sessionId: string) {
-    if (!userId) return;
-    const sessions = (await this.getSessions(userId))!;
+  async getSessionById(sessionId: string) {
+    if (!(await this.getCurrentUser())) return;
+    const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.id === sessionId);
   }
 
-  async getSessionByCode(userId: string, code: string) {
-    if (!userId) return;
-    const sessions = (await this.getSessions(userId))!;
+  async getSessionByCode(code: string) {
+    if (!(await this.getCurrentUser())) return;
+    const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.code === code);
   }
 
-  async startSession(userId: string) {
-    if (!userId) return;
+  async startSession() {
+    if (!(await this.getCurrentUser())) return;
     const newSession: Session = {
       id: uuidv4(),
       code: generateCode(),
@@ -99,19 +99,41 @@ export class ClientDb {
     return this.LSHandler.addItem(Schema.Sessions, newSession);
   }
 
-  async toggleBreak(userId: string, sessionId: string) {
-    if (!userId) return;
-    const session = (await this.getSessionById(userId, sessionId))!;
+  async toggleBreak(sessionId: string) {
+    if (!(await this.getCurrentUser())) return;
+    const session = (await this.getSessionById(sessionId))!;
     session.activityChanges.push(new Date());
     return this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
-  async endSession(userId: string, sessionId: string) {
-    if (!userId) return;
-    const session = (await this.getSessionById(userId, sessionId))!;
+  async endSession(sessionId: string) {
+    if (!(await this.getCurrentUser())) return;
+    const session = (await this.getSessionById(sessionId))!;
     session.hasEnded = true;
     session.activityChanges.push(new Date());
     this.LSHandler.updateItem(Schema.Sessions, session);
+  }
+
+  async login(username: string, password: string) {
+    const user: User = {
+      id: uuidv4(),
+      email: `${username}@example.com`,
+      username,
+      passwordHash: password,
+      sessionIds: [],
+    };
+    this.LSHandler.setItems(Schema.Users, [user]);
+  }
+
+  async getCurrentUser() {
+    const users = this.LSHandler.getItems(Schema.Users);
+    if (users.length) {
+      return users[0];
+    }
+  }
+
+  async logout() {
+    this.LSHandler.setItems(Schema.Users, []);
   }
 
   async getRandomQuote() {

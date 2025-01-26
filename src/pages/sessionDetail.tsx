@@ -36,14 +36,14 @@ export default function SessionDetail() {
 
   async function toggleBreak() {
     const db = new ClientDb();
-    const newSession = await db.toggleBreak("test", sessionId!);
+    const newSession = await db.toggleBreak(sessionId!);
     setSession(newSession);
     if (newSession) handleMessageScheduling(db, newSession);
   }
 
   function endSession() {
     const db = new ClientDb();
-    db.endSession("test", sessionId!);
+    db.endSession(sessionId!);
     clearScheduled();
     navigate("/dashboard");
   }
@@ -51,7 +51,7 @@ export default function SessionDetail() {
   useEffect(() => {
     async function getSession() {
       const db = new ClientDb();
-      const session = await db.getSessionById("test", sessionId!);
+      const session = await db.getSessionById(sessionId!);
       setSession(session);
     }
 

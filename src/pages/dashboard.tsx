@@ -4,25 +4,30 @@ import { Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
 
 export default function Dashboard() {
+  const [username, setUsername] = useState("");
   const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
   const [pastSessions, setPastSessions] = useState<Session[]>([]);
 
   useEffect(() => {
-    async function getSessions() {
-      const clientDb = new ClientDb();
-      const sessions = await clientDb.getSessions("test");
+    async function getData() {
+      const db = new ClientDb();
+
+      const user = await db.getCurrentUser();
+      if (user) setUsername(user.username);
+
+      const sessions = await db.getSessions();
       setCurrentSessions(
         sessions?.filter((session) => !session.hasEnded) ?? []
       );
       setPastSessions(sessions?.filter((session) => session.hasEnded) ?? []);
     }
 
-    getSessions();
+    getData();
   }, []);
 
   return (
     <>
-      <p id="welcome">Welcome Cosmo!</p>
+      <p id="welcome">Welcome {username}</p>
 
       <h2>Current Sessions</h2>
       {currentSessions.length ? (

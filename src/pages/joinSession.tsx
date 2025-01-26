@@ -11,7 +11,7 @@ export default function JoinSession() {
 
   async function onSubmit() {
     const db = new ClientDb();
-    const session = await db.getSessionByCode("test", code);
+    const session = await db.getSessionByCode(code);
 
     if (session) {
       navigate(`/sessions/${session.id}`);

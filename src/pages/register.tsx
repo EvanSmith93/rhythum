@@ -2,6 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Center from "../components/center";
 import { useState } from "react";
+import { ClientDb } from "../services/clientDb";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -9,7 +10,9 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function onSubmit() {
+  async function onSubmit() {
+    const db = new ClientDb();
+    await db.login(username, password);
     navigate("/dashboard");
   }
 

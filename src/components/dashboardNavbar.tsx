@@ -7,9 +7,15 @@ export default function DashboardNavbar() {
 
   async function createSession() {
     const db = new ClientDb();
-    const session = await db.startSession("test");
+    const session = await db.startSession();
     if (!session) return;
     navigate(`/sessions/${session.id}`);
+  }
+
+  async function logout() {
+    const db = new ClientDb();
+    db.logout();
+    navigate("/");
   }
 
   return (
@@ -18,9 +24,7 @@ export default function DashboardNavbar() {
       <Nav.Link as={Link} to="/join-session">
         Join with Session Code
       </Nav.Link>
-      <Nav.Link as={Link} to="/">
-        Log Out
-      </Nav.Link>
+      <Nav.Link onClick={logout}>Log Out</Nav.Link>
     </Nav>
   );
 }

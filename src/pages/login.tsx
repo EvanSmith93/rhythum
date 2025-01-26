@@ -2,13 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import Center from "../components/center";
 import { useState } from "react";
+import { ClientDb } from "../services/clientDb";
 
 export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function onSubmit() {
+  async function onSubmit() {
+    const db = new ClientDb();
+    await db.login(username, password);
     navigate("/dashboard");
   }
 
