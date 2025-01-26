@@ -13,6 +13,11 @@ export type User = {
   sessionIds: string[];
 };
 
+export type Message = {
+  title: string;
+  body: string;
+}
+
 export type Quote = {
   text: string;
   author: string;

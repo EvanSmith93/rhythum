@@ -32,5 +32,6 @@ export class LSHandler {
     const items = this.getItems(key).filter((i) => i.id !== item.id);
     items.push(item);
     this.setItems(key, items);
+    return item;
   }
 }

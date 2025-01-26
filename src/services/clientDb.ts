@@ -103,7 +103,7 @@ export class ClientDb {
     if (!userId) return;
     const session = (await this.getSessionById(userId, sessionId))!;
     session.activityChanges.push(new Date());
-    this.LSHandler.updateItem(Schema.Sessions, session);
+    return this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
   async endSession(userId: string, sessionId: string) {
