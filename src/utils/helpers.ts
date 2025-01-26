@@ -25,6 +25,17 @@ export function calculateTotalSessionTime(session: Session) {
   );
 }
 
+export function formatIntervalLength(seconds: number) {
+  const plural = (num: number) => (num !== 1 ? "s" : "");
+
+  if (seconds < 60) {
+    return `${seconds} second${plural(seconds)}`;
+  } else {
+    const minutes = Math.floor(seconds / 60);
+    return `${minutes} minute${plural(minutes)}`;
+  }
+}
+
 export function generateCode() {
   const asciiMin = 65;
   const asciiMax = 91;

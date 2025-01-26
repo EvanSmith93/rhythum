@@ -93,7 +93,7 @@ export default function SessionDetail() {
       <div id="center-content">
         <h3>{summaryText}</h3>
         <SessionTimes session={session} />
-        <SummaryBar session={session} width={550} height={45} />
+        <SummaryBar session={session} width={550} height={45} tooltip />
 
         {!session.hasEnded && (
           <div>

@@ -3,16 +3,20 @@ import { Session } from "../utils/types";
 import {
   calculateSessionTimeLengths,
   calculateTotalSessionTime,
+  formatIntervalLength,
 } from "../utils/helpers";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 export default function SummaryBar({
   session,
   width,
   height,
+  tooltip = false,
 }: {
   session: Session;
   width: number;
   height: number;
+  tooltip?: boolean;
 }) {
   const [timeLengths, setTimeLengths] = useState<number[]>();
 
@@ -41,7 +45,13 @@ export default function SummaryBar({
           totalSessionTime !== 0
             ? (interval / totalSessionTime) * width
             : width;
-        return (
+
+        const renderTooltip = (props: TooltipProps) => {
+          const seconds = Math.floor(interval / 1000);
+          return <Tooltip {...props}>{formatIntervalLength(seconds)}</Tooltip>;
+        };
+
+        const colorBlock = (
           <span
             key={index}
             className={`d-inline-block ${
@@ -49,6 +59,12 @@ export default function SummaryBar({
             }`}
             style={{ width: widthStyle, height: heightStyle }}
           />
+        );
+
+        return tooltip ? (
+          <OverlayTrigger overlay={renderTooltip}>{colorBlock}</OverlayTrigger>
+        ) : (
+          colorBlock
         );
       })}
     </div>
