@@ -3,7 +3,7 @@ export default function Footer() {
     <footer>
       <hr />
       <div>
-        Evan Smith &nbsp;•&nbsp;
+        Evan Smith&nbsp;•&nbsp;
         <a href="https://github.com/EvanSmith93/rhythum" target="_blank">
           GitHub
         </a>

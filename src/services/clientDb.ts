@@ -3,42 +3,47 @@ import { Quote, Session, User } from "../utils/types";
 import { LSHandler, Schema } from "./LSHandler";
 import { v4 as uuidv4 } from "uuid";
 
-const defaultSessions: Session[] = [
-  {
-    id: uuidv4(),
-    code: generateCode(),
-    activityChanges: [
-      new Date("2025-01-22T06:58:00.000Z"),
-      new Date("2025-01-22T06:58:30.000Z"),
-      new Date("2025-01-22T06:59:00.000Z"),
-      new Date("2025-01-22T07:03:00.000Z"),
-    ],
-    hasEnded: false,
-  },
-  {
-    id: uuidv4(),
-    code: generateCode(),
-    activityChanges: [
-      new Date("2025-01-08T21:45:00.000Z"),
-      new Date("2025-01-08T22:31:00.000Z"),
-      new Date("2025-01-09T00:11:00.000Z"),
-    ],
-    hasEnded: true,
-  },
-  {
-    id: uuidv4(),
-    code: generateCode(),
-    activityChanges: [
-      new Date("2025-01-03T17:28:00.000Z"),
-      new Date("2025-01-03T17:35:00.000Z"),
-      new Date("2025-01-03T17:47:00.000Z"),
-      new Date("2025-01-03T18:33:00.000Z"),
-      new Date("2025-01-03T18:55:00.000Z"),
-      new Date("2025-01-03T19:09:00.000Z"),
-    ],
-    hasEnded: true,
-  },
-];
+// const defaultSessions: Session[] = [
+//   {
+//     id: uuidv4(),
+//     code: generateCode(),
+//     activityChanges: [
+//       new Date("2025-01-22T06:58:00.000Z"),
+//       new Date("2025-01-22T06:58:30.000Z"),
+//       new Date("2025-01-22T06:59:00.000Z"),
+//       new Date("2025-01-22T07:03:00.000Z"),
+//     ],
+//     hasEnded: false,
+//   },
+//   {
+//     id: uuidv4(),
+//     code: generateCode(),
+//     activityChanges: [
+//       new Date("2025-01-08T21:45:00.000Z"),
+//       new Date("2025-01-08T22:31:00.000Z"),
+//       new Date("2025-01-09T00:11:00.000Z"),
+//     ],
+//     hasEnded: true,
+//   },
+//   {
+//     id: uuidv4(),
+//     code: generateCode(),
+//     activityChanges: [
+//       new Date("2025-01-03T17:28:00.000Z"),
+//       new Date("2025-01-03T17:35:00.000Z"),
+//       new Date("2025-01-03T17:47:00.000Z"),
+//       new Date("2025-01-03T18:33:00.000Z"),
+//       new Date("2025-01-03T18:55:00.000Z"),
+//       new Date("2025-01-03T19:09:00.000Z"),
+//     ],
+//     hasEnded: true,
+//   },
+// ];
+
+// if (!localStorage.getItem("initialized")) {
+//   new LSHandler().setItems(Schema.Sessions, defaultSessions);
+//   localStorage.setItem("initialized", "true");
+// }
 
 const quotes: Quote[] = [
   {
@@ -62,11 +67,6 @@ const quotes: Quote[] = [
     author: "Laurence J. Peter",
   },
 ];
-
-if (!localStorage.getItem("initialized")) {
-  new LSHandler().setItems(Schema.Sessions, defaultSessions);
-  localStorage.setItem("initialized", "true");
-}
 
 export class ClientDb {
   LSHandler = new LSHandler();
