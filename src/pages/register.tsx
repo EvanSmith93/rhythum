@@ -1,11 +1,10 @@
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Center from "../components/center";
 import { useState } from "react";
 import { ClientDb } from "../services/clientDb";
 
 export default function Register() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +12,7 @@ export default function Register() {
   async function onSubmit() {
     const db = new ClientDb();
     await db.login(username, password);
-    navigate("/dashboard");
+    window.location.reload();
   }
 
   return (
@@ -46,7 +45,7 @@ export default function Register() {
         >
           Sign Up
         </Button>
-        <Link to="/">Have an account? Log in.</Link>
+        <Link to="/login">Have an account? Log in.</Link>
       </Form>
     </Center>
   );

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Quote, Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
+import Error404 from "./404";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
@@ -59,7 +60,7 @@ export default function SessionDetail() {
   }, [sessionId]);
 
   if (!session) {
-    return <>Sorry! Could not find the session you are looking for.</>;
+    return <Error404 />
   }
 
   const summaryText = !session.hasEnded

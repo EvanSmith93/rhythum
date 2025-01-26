@@ -14,8 +14,8 @@ export default function DashboardNavbar() {
 
   async function logout() {
     const db = new ClientDb();
-    db.logout();
-    navigate("/");
+    await db.logout();
+    window.location.reload();
   }
 
   return (

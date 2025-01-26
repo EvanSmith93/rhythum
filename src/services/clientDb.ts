@@ -72,24 +72,24 @@ export class ClientDb {
   LSHandler = new LSHandler();
 
   async getSessions() {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     return this.LSHandler.getItems(Schema.Sessions);
   }
 
   async getSessionById(sessionId: string) {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.id === sessionId);
   }
 
   async getSessionByCode(code: string) {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.code === code);
   }
 
   async startSession() {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     const newSession: Session = {
       id: uuidv4(),
       code: generateCode(),
@@ -100,14 +100,14 @@ export class ClientDb {
   }
 
   async toggleBreak(sessionId: string) {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     const session = (await this.getSessionById(sessionId))!;
     session.activityChanges.push(new Date());
     return this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
   async endSession(sessionId: string) {
-    if (!(await this.getCurrentUser())) return;
+    if (!this.getCurrentUser()) return;
     const session = (await this.getSessionById(sessionId))!;
     session.hasEnded = true;
     session.activityChanges.push(new Date());
@@ -125,7 +125,7 @@ export class ClientDb {
     this.LSHandler.setItems(Schema.Users, [user]);
   }
 
-  async getCurrentUser() {
+  getCurrentUser() {
     const users = this.LSHandler.getItems(Schema.Users);
     if (users.length) {
       return users[0];

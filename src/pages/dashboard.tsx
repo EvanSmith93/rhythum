@@ -12,7 +12,7 @@ export default function Dashboard() {
     async function getData() {
       const db = new ClientDb();
 
-      const user = await db.getCurrentUser();
+      const user = db.getCurrentUser();
       if (user) setUsername(user.username);
 
       const sessions = await db.getSessions();
