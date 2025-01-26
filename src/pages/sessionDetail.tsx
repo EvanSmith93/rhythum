@@ -28,7 +28,7 @@ export default function SessionDetail() {
         body: `${quote.text}\n-${quote.author}`,
       };
 
-      scheduleMessage(message, 6 * 1000, () => setQuote(quote));
+      scheduleMessage(message, 15 * 60 * 1000, () => setQuote(quote));
     } else {
       clearScheduled();
       setQuote(undefined);
@@ -60,7 +60,7 @@ export default function SessionDetail() {
   }, [sessionId]);
 
   if (!session) {
-    return <Error404 />
+    return <Error404 />;
   }
 
   const summaryText = !session.hasEnded

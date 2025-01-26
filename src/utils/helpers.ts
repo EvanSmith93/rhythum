@@ -1,4 +1,4 @@
-import { differenceInSeconds, format } from "date-fns";
+import { differenceInMilliseconds, format } from "date-fns";
 import { Session } from "./types";
 
 export function formatDate(date: Date) {
@@ -23,13 +23,13 @@ export function calculateSessionTimeLengths(session: Session) {
       if (index === changes.length - 1) {
         return 0;
       }
-      return differenceInSeconds(changes[index + 1], changes[index]);
+      return differenceInMilliseconds(changes[index + 1], changes[index]);
     })
     .slice(0, -1);
 }
 
 export function calculateTotalSessionTime(session: Session) {
-  return differenceInSeconds(
+  return differenceInMilliseconds(
     session.hasEnded
       ? session.activityChanges[session.activityChanges.length - 1]
       : new Date(),
