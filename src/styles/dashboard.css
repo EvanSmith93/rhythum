@@ -1,0 +1,25 @@
+#welcome {
+  margin-bottom: 0.5rem;
+}
+
+.session-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: var(--card-color);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  width: fit-content;
+  text-decoration: none;
+  color: inherit;
+}
+
+.session-card:hover {
+  background-color: color-mix(in srgb, var(--card-color) 94%, black 6%);
+}
+
+.session-card div {
+  width: 200px;
+  margin-right: 1rem;
+}

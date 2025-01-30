@@ -23,7 +23,7 @@
   ) !important;
 }
 
-body {
+#layout {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -35,17 +35,14 @@ header {
   padding-top: 1rem;
 }
 
-header img {
-  margin-left: 1rem;
-}
-
-header h1 {
+.navbar-brand, .navbar-brand:hover {
   color: var(--primary-color);
   font-size: 2.1rem;
 }
 
 main {
   flex: 1;
+  margin: 1rem;
 }
 
 footer div {
@@ -55,7 +52,7 @@ footer div {
   padding-bottom: 1rem;
 }
 
-img[src="summaryBar.png"] {
+.summary-bar {
   border-radius: 6px;
   border: 1px solid var(--bs-body-color);
 }
