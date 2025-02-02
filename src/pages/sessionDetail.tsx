@@ -1,16 +1,73 @@
 import { Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
-import { sessions } from "../utils/staticData";
-import { formatSessionTimes } from "../utils/helpers";
+import { useEffect, useMemo, useState } from "react";
+import { Quote, Session } from "../utils/types";
+import { ClientDb } from "../services/clientDb";
+import useNotificationScheduler from "../hooks/useNotificationScheduler";
+import Error404 from "./404";
+import SessionTimes from "../components/sessionTimes";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
-  const session = sessions.find((session) => session.id === sessionId);
+  const navigate = useNavigate();
+  const [session, setSession] = useState<Session | undefined>();
+  const [quote, setQuote] = useState<Quote | undefined>();
+  const { scheduleMessage, clearScheduled } = useNotificationScheduler();
+
+  const onBreak = useMemo(
+    () => (session ? session.activityChanges.length % 2 === 0 : false),
+    [session]
+  );
+
+  async function handleMessageScheduling(db: ClientDb, session: Session) {
+    if (session && session.activityChanges.length % 2 === 0) {
+      const quote = await db.getRandomQuote();
+      const message = {
+        title: "Ready to keep working?",
+        body: `${quote.text}\n-${quote.author}`,
+      };
+
+      scheduleMessage(message, 15 * 60 * 1000, () => setQuote(quote));
+    } else {
+      clearScheduled();
+      setQuote(undefined);
+    }
+  }
+
+  async function toggleBreak() {
+    const db = new ClientDb();
+    const newSession = await db.toggleBreak(sessionId!);
+    setSession(newSession);
+    if (newSession) handleMessageScheduling(db, newSession);
+  }
+
+  function endSession() {
+    const db = new ClientDb();
+    db.endSession(sessionId!);
+    clearScheduled();
+    navigate("/dashboard");
+  }
+
+  useEffect(() => {
+    async function getSession() {
+      const db = new ClientDb();
+      const session = await db.getSessionById(sessionId!);
+      setSession(session);
+    }
+
+    getSession();
+  }, [sessionId]);
 
   if (!session) {
-    return <>Sorry! Could not find the session you are looking for.</>;
+    return <Error404 />;
   }
+
+  const summaryText = !session.hasEnded
+    ? onBreak
+      ? "Currently Taking a Break"
+      : "Currently Studying"
+    : "Session has Ended";
 
   return (
     <>
@@ -21,28 +78,36 @@ export default function SessionDetail() {
           {session.code}
         </div>
 
-        <div id="notification" className="alert alert-warning">
-          You've been on break for 15 minutes. Ready to get back into it?
-          <br />
-          <i>
-            Through discipline comes freedom.
+        {quote && (
+          <div id="notification" className="alert alert-warning">
+            You've been on break for 15 minutes. Ready to keep working?
             <br />
-            -Aristotle
-          </i>
-        </div>
+            <i>
+              {quote?.text}
+              <br />-{quote?.author}
+            </i>
+          </div>
+        )}
       </div>
 
       <div id="center-content">
-        <h3>Currently Taking a Break</h3>
-        <p>{formatSessionTimes(session)}</p>
-        <SummaryBar height="45px" />
+        <h3>{summaryText}</h3>
+        <SessionTimes session={session} />
+        <SummaryBar session={session} width={550} height={45} tooltip />
 
-        <div>
-          <Button id="start-stop-break">Finish Break</Button>
-          <Link to="/dashboard">
-            <Button id="end-session">End Session</Button>
-          </Link>
-        </div>
+        {!session.hasEnded && (
+          <div>
+            <Button
+              className={onBreak ? "light-blue" : "dark-blue"}
+              onClick={toggleBreak}
+            >
+              {onBreak ? "Finish Break" : "Start Break"}
+            </Button>
+            <Button id="end-session" onClick={endSession}>
+              End Session
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

@@ -79,3 +79,15 @@ In this deliverable I created a React application and moved all my HTML/CSS into
 - [x] Bundled using Vite - I am using Vite as the React bundler. You can run `npm run dev` to preview the application now.
 - [x] Multiple react components - All of my HTML pages are now their own component. In addition, I've created components for various other sections of pages such as the header and footer, as well as the session card. There is little to no reactivity as this is not needed for this deliverable.
 - [x] React router - I am using React Router and the Link component to have multiple pages within one SPA.
+
+## React deliverable Phase 2: Interactivity
+
+For this deliverable I added interactivity throughout the entire application. This means all the features are now fully functional for a single user. I am using local storage to store all the data, rather than a database. This means I'm also not using HTTPS or WebSockets yet. Also, I am not actually keeping track of registered users yet. Finally, I am not fetching quotes using the API yet.
+
+- [x] Components - I created new components to make the code even more modular. These include the `summaryBar` and `sessionTimes` components.
+- [x] Login - Type in a username and password (at least 3 characters each) to be logged in. Your login info will be stored using local storage and cleared when you log out.
+- [x] Database - Right now I am storing all the session information within local storage, rather than the database.
+- [x] WebSocket - Currently when you stop or start a break, it updates local storage with that information. Later on I'll switch this out for WebSocket communication.
+- [x] Application logic - All of the main logic is there. The biggest piece was using all the times the user started/stopped working for a given session to construct the blue summary bar of how long they were working or not working for. There was also some logic for sending a push notification to the user after 15 minutes of being on a break.
+- [x] Router - I separated out the routes into authenticated and unauthenticated routes. Then depending on whether the user is logged in it allow you to go to different routes.
+- [x] Hooks - I created a few hooks to manage scheduling and sending the push notifications to remind the user to keep working.
