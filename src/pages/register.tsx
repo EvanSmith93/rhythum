@@ -6,13 +6,19 @@ import { ClientDb } from "../services/clientDb";
 
 export default function Register() {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  async function onSubmit() {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     const db = new ClientDb();
-    await db.login(username, password);
-    window.location.reload();
+    const res = await db.register(email, password);
+    console.log(res);
+    if (res.status === 200) {
+      window.location.reload();
+    } else {
+      alert("Registration Failed");
+    }
   }
 
   return (
@@ -25,24 +31,19 @@ export default function Register() {
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
-        <Form.Control
+        {/* <Form.Control
           type="text"
           placeholder="username"
           onChange={(e) => setUsername(e.target.value)}
           value={username}
-        />
+        /> */}
         <Form.Control
           type="password"
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        <Button
-          type="submit"
-          disabled={
-            email.length < 3 || username.length < 3 || password.length < 3
-          }
-        >
+        <Button type="submit" disabled={password.length < 4}>
           Sign Up
         </Button>
         <Link to="/login">Have an account? Log in.</Link>

@@ -72,24 +72,20 @@ export class ClientDb {
   LSHandler = new LSHandler();
 
   async getSessions() {
-    if (!this.getCurrentUser()) return;
     return this.LSHandler.getItems(Schema.Sessions);
   }
 
   async getSessionById(sessionId: string) {
-    if (!this.getCurrentUser()) return;
     const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.id === sessionId);
   }
 
   async getSessionByCode(code: string) {
-    if (!this.getCurrentUser()) return;
     const sessions = (await this.getSessions())!;
     return sessions.find((session) => session.code === code);
   }
 
   async startSession() {
-    if (!this.getCurrentUser()) return;
     const newSession: Session = {
       id: uuidv4(),
       code: generateCode(),
@@ -100,40 +96,62 @@ export class ClientDb {
   }
 
   async toggleBreak(sessionId: string) {
-    if (!this.getCurrentUser()) return;
     const session = (await this.getSessionById(sessionId))!;
     session.activityChanges.push(new Date());
     return this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
   async endSession(sessionId: string) {
-    if (!this.getCurrentUser()) return;
     const session = (await this.getSessionById(sessionId))!;
     session.hasEnded = true;
     session.activityChanges.push(new Date());
     this.LSHandler.updateItem(Schema.Sessions, session);
   }
 
-  async login(username: string, password: string) {
-    const user: User = {
-      id: uuidv4(),
-      email: `${username}@example.com`,
-      username,
-      passwordHash: password,
-      sessionIds: [],
-    };
-    this.LSHandler.setItems(Schema.Users, [user]);
+  async register(email: string, password: string) {
+    return await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": " application/json" },
+      body: JSON.stringify({ email, password }),
+    });
   }
 
-  getCurrentUser() {
-    const users = this.LSHandler.getItems(Schema.Users);
-    if (users.length) {
-      return users[0];
-    }
+  async login(email: string, password: string) {
+    // const user: User = {
+    //   id: uuidv4(),
+    //   email: `${username}@example.com`,
+    //   username,
+    //   passwordHash: password,
+    //   sessionIds: [],
+    // };
+    // this.LSHandler.setItems(Schema.Users, [user]);
+
+    return await fetch("/api/auth", {
+      method: "PUT",
+      headers: { "Content-Type": " application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+  }
+
+  async getCurrentUser(): Promise<User> {
+    const user = await fetch("/api/user/me", {
+      method: "GET",
+      headers: { "Content-Type": " application/json" },
+    });
+    return user.status === 200 ? user.json() : null;
+  }
+
+  isLoggedIn() {
+    // const users = this.LSHandler.getItems(Schema.Users);
   }
 
   async logout() {
-    this.LSHandler.setItems(Schema.Users, []);
+    // this.LSHandler.setItems(Schema.Users, []);
+
+    return await fetch("/api/auth", {
+      method: "DELETE",
+      headers: { "Content-Type": " application/json" },
+    });
   }
 
   async getRandomQuote() {

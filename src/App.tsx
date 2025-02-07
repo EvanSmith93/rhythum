@@ -11,14 +11,40 @@ import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
 import { ClientDb } from "./services/clientDb";
+import { createContext, useEffect, useState } from "react";
+import { User } from "./utils/types";
+
+type UserContextProps = {
+  user: User | null;
+  refreshUser: () => Promise<void>;
+};
+
+export const UserContext = createContext<UserContextProps>({
+  user: null,
+  refreshUser: async () => {},
+});
 
 function App() {
   const db = new ClientDb();
-  const user = db.getCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+
+  async function refreshUser() {
+    const user = await db.getCurrentUser();
+    console.log('refreshing', user);
+    setUser(user);
+  }
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   return (
     <BrowserRouter>
-      <Routes>{user ? AuthenticatedRoutes() : UnauthenticatedRoutes()}</Routes>
+      <UserContext.Provider value={{ user, refreshUser }}>
+        <Routes>
+          {user ? AuthenticatedRoutes() : UnauthenticatedRoutes()}
+        </Routes>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }
