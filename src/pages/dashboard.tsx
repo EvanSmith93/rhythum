@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SessionCard from "../components/sessionCard";
 import { Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
-import { UserContext } from "../App";
+import { useUser } from "../hooks/useUser";
 
 export default function Dashboard() {
   const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
   const [pastSessions, setPastSessions] = useState<Session[]>([]);
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   useEffect(() => {
     async function getData() {

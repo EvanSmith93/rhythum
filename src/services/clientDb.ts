@@ -117,15 +117,6 @@ export class ClientDb {
   }
 
   async login(email: string, password: string) {
-    // const user: User = {
-    //   id: uuidv4(),
-    //   email: `${username}@example.com`,
-    //   username,
-    //   passwordHash: password,
-    //   sessionIds: [],
-    // };
-    // this.LSHandler.setItems(Schema.Users, [user]);
-
     return await fetch("/api/auth", {
       method: "PUT",
       headers: { "Content-Type": " application/json" },
@@ -141,13 +132,7 @@ export class ClientDb {
     return user.status === 200 ? user.json() : null;
   }
 
-  isLoggedIn() {
-    // const users = this.LSHandler.getItems(Schema.Users);
-  }
-
   async logout() {
-    // this.LSHandler.setItems(Schema.Users, []);
-
     return await fetch("/api/auth", {
       method: "DELETE",
       headers: { "Content-Type": " application/json" },

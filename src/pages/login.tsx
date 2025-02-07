@@ -12,6 +12,7 @@ export default function Login() {
     event.preventDefault();
     const db = new ClientDb();
     const res = await db.login(email, password);
+
     if (res.status === 200) {
       window.location.reload();
     } else {
