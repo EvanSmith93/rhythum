@@ -1,8 +1,11 @@
-import { hash } from "bcrypt";
-import express from "express";
+import { compare, hash } from "bcrypt";
+import cookieParser from "cookie-parser";
+import express, { Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/api/auth", async (req, res) => {
   if (await getUser("email", req.body.email)) {
@@ -14,10 +17,23 @@ app.post("/api/auth", async (req, res) => {
 });
 
 app.put("/api/auth", async (req, res) => {
-  res.send({ email: "marta@id.com" });
+  const user = await getUser("email", req.body.email);
+  if (user && (await compare(req.body.password, user.password))) {
+    setAuthCookie(res, user);
+    res.send({ email: user.email });
+  } else {
+    res.status(401).send({ msg: "Incorrect Username or Password " });
+  }
 });
 
 app.delete("/api/auth", async (req, res) => {
+  const token = req.cookies["token"];
+  const user = await getUser("token", token);
+
+  if (user) {
+    clearAuthCookie(res, user);
+  }
+
   res.send({});
 });
 
@@ -35,13 +51,12 @@ const users: User[] = [];
 async function createUser(email: string, password: string) {
   const passwordHash = await hash(password, 10);
 
-  const user = {
+  const user: User = {
     email: email,
     password: passwordHash,
   };
 
   users.push(user);
-
   return user;
 }
 
@@ -49,7 +64,23 @@ async function getUser(field: keyof User, value: string) {
   return users.find((user) => user[field] === value);
 }
 
+function setAuthCookie(res: Response, user: User) {
+  user.token = uuidv4();
+
+  res.cookie("token", user.token, {
+    secure: true,
+    httpOnly: true,
+    sameSite: "strict",
+  });
+}
+
+function clearAuthCookie(res: Response, user: User) {
+  delete user.token;
+  res.clearCookie("token");
+}
+
 type User = {
   email: string;
   password: string;
+  token?: string;
 };
