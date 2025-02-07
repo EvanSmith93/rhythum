@@ -6,10 +6,8 @@ export type Session = {
 };
 
 export type User = {
-  id: string;
+  id: string; // TODO: remove the id once local storage is not being used
   email: string;
-  username: string;
-  passwordHash: string;
   sessionIds: string[];
 };
 

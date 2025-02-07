@@ -1,11 +1,22 @@
 import { compare, hash } from "bcrypt";
 import cookieParser from "cookie-parser";
-import express, { Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies["token"];
+  const user = await getUser("token", token);
+  if (user) {
+    res.locals.user = user;
+    next();
+  } else {
+    res.status(401).send({ msg: "Unauthorized" });
+  }
+};
 
 app.post("/api/auth", async (req, res) => {
   if (await getUser("email", req.body.email)) {
@@ -19,39 +30,21 @@ app.post("/api/auth", async (req, res) => {
 
 app.put("/api/auth", async (req, res) => {
   const user = await getUser("email", req.body.email);
-  console.log(user, users);
   if (user && (await compare(req.body.password, user.password))) {
-    console.log("logging in user", req.body);
     setAuthCookie(res, user);
-    res.send({ email: user.email });
-  } else {
-    res.status(401).send({ msg: "Incorrect Email or Password " });
-  }
-});
-
-app.delete("/api/auth", async (req, res) => {
-  const token = req.cookies["token"];
-  const user = await getUser("token", token);
-
-  if (user) {
-    console.log("logging out user", req.body);
-    clearAuthCookie(res, user);
-  }
-
-  res.send({});
-});
-
-app.get("/api/user/me", async (req, res) => {
-  const token = req.cookies["token"];
-  console.log(token);
-  const user = await getUser("token", token);
-  console.log(user);
-
-  if (user) {
     res.send({ email: user.email });
   } else {
     res.status(401).send({ msg: "Unauthorized" });
   }
+});
+
+app.delete("/api/auth", verifyAuth, async (req, res) => {
+  clearAuthCookie(res, res.locals.user);
+  res.send({});
+});
+
+app.get("/api/user/me", verifyAuth, async (req, res) => {
+  res.send({ email: res.locals.user.email });
 });
 
 app.get("/api/user", async (req, res) => {
@@ -72,7 +65,6 @@ async function createUser(email: string, password: string) {
     email: email,
     password: passwordHash,
   };
-  console.log(user);
 
   users.push(user);
   return user;
