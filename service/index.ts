@@ -37,6 +37,17 @@ app.delete("/api/auth", async (req, res) => {
   res.send({});
 });
 
+app.get("/api/user/me", async (req, res) => {
+  const token = req.cookies["token"];
+  const user = await getUser("token", token);
+
+  if (user) {
+    res.send({ email: user.email });
+  } else {
+    res.status(401).send({ msg: "Unauthorized" });
+  }
+});
+
 app.get("/api/user", async (req, res) => {
   res.send({ email: "marta@id.com" });
 });
