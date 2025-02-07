@@ -11,22 +11,21 @@ import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
 import { ClientDb } from "./services/clientDb";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "./utils/types";
 import { UserContext } from "./hooks/useUser";
 
 function App() {
   const db = new ClientDb();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(
+    JSON.parse(localStorage.getItem("user") ?? "{}")
+  );
 
   async function refreshUser() {
     const user = await db.getCurrentUser();
+    localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
   }
-
-  useEffect(() => {
-    refreshUser();
-  }, []);
 
   return (
     <BrowserRouter>

@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import Center from "../components/center";
 import { useState } from "react";
 import { ClientDb } from "../services/clientDb";
+import { useUser } from "../hooks/useUser";
 
 export default function Register() {
+  const { refreshUser } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +16,7 @@ export default function Register() {
     const res = await db.register(email, password);
 
     if (res.status === 200) {
-      window.location.reload();
+      refreshUser();
     } else {
       alert("Registration Failed");
     }

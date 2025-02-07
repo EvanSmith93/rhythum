@@ -3,8 +3,10 @@ import { Button, Form } from "react-bootstrap";
 import Center from "../components/center";
 import { useState } from "react";
 import { ClientDb } from "../services/clientDb";
+import { useUser } from "../hooks/useUser";
 
 export default function Login() {
+  const { refreshUser } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +16,7 @@ export default function Login() {
     const res = await db.login(email, password);
 
     if (res.status === 200) {
-      window.location.reload();
+      refreshUser();
     } else {
       alert("Incorrect Username or Password");
     }
