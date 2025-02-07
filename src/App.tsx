@@ -11,21 +11,25 @@ import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
 import { ClientDb } from "./services/clientDb";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { User } from "./utils/types";
 import { UserContext } from "./hooks/useUser";
 
 function App() {
-  const db = new ClientDb();
   const [user, setUser] = useState<User | null>(
-    JSON.parse(localStorage.getItem("user") ?? "{}")
+    JSON.parse(localStorage.getItem("user") ?? "null")
   );
 
-  async function refreshUser() {
+  const refreshUser = useCallback(async () => {
+    const db = new ClientDb();
     const user = await db.getCurrentUser();
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
-  }
+  }, []);
+
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   return (
     <BrowserRouter>
