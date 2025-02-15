@@ -92,12 +92,12 @@ export class ClientDb {
     return session.status === 200 ? ((await session.json()) as Session) : null;
   }
 
-  async getSessionByCode(code: string) {
+  async joinSession(code: string) {
     // const sessions = (await this.getSessions())!;
     // return sessions.find((session) => session.code === code);
 
-    const session = await fetch(`/api/sessions/code/${code}`, {
-      method: "GET",
+    const session = await fetch(`/api/sessions/join/${code}`, {
+      method: "PUT",
       headers: { "Content-Type": " application/json" },
     });
     return session.status === 200 ? ((await session.json()) as Session) : null;

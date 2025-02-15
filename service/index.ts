@@ -35,21 +35,21 @@ app.get("/api/sessions/id/:sessionId", verifyAuth, async (req, res) => {
   }
 });
 
-app.get("/api/sessions/code/:code", verifyAuth, async (req, res) => {
-  const session = await getSessionByCode(
-    res.locals.user.email,
-    req.params.code
-  );
+app.post("/api/sessions", verifyAuth, async (req, res) => {
+  const session = await startSession(res.locals.user);
+  res.send(session);
+});
+
+app.put("/api/sessions/join/:code", verifyAuth, async (req, res) => {
+  const session = await joinSession(res.locals.user, req.params.code);
+  console.log("--- users", users);
+  console.log("--- sessions", sessions);
+
   if (session) {
     res.send(session);
   } else {
     res.status(404).send({ msg: "Not Found" });
   }
-});
-
-app.post("/api/sessions", verifyAuth, async (req, res) => {
-  const session = await startSession(res.locals.user);
-  res.send(session);
 });
 
 app.put("/api/sessions/toggle/:sessionId", verifyAuth, async (req, res) => {
@@ -125,11 +125,6 @@ async function getSessionById(userEmail: string, sessionId: string) {
   return userSessions.find((session) => session.id === sessionId) ?? null;
 }
 
-async function getSessionByCode(userEmail: string, code: string) {
-  const userSessions = await getSessions(userEmail);
-  return userSessions.find((session) => session.code === code) ?? null;
-}
-
 async function startSession(user: User) {
   const newSession: Session = {
     id: uuidv4(),
@@ -141,6 +136,17 @@ async function startSession(user: User) {
   user.sessionIds.push(newSession.id);
   sessions.push(newSession);
   return newSession;
+}
+
+async function joinSession(user: User, code: string) {
+  const session = sessions.find((session) => session.code === code);
+  if (!session) return null;
+
+  if (!session.userEmails.includes(user.email)) {
+    user.sessionIds.push(session.id);
+    session.userEmails.push(user.email);
+  }
+  return session;
 }
 
 async function toggleBreak(userEmail: string, sessionId: string) {
