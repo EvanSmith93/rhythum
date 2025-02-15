@@ -1,7 +1,5 @@
-import { generateCode } from "../utils/helpers";
 import { Quote, Session, User } from "../utils/types";
-import { LSHandler, Schema } from "./LSHandler";
-import { v4 as uuidv4 } from "uuid";
+import { LSHandler } from "./LSHandler";
 
 // const defaultSessions: Session[] = [
 //   {
@@ -72,40 +70,77 @@ export class ClientDb {
   LSHandler = new LSHandler();
 
   async getSessions() {
-    return this.LSHandler.getItems(Schema.Sessions);
+    // return this.LSHandler.getItems(Schema.Sessions);
+
+    const sessions = await fetch("/api/sessions", {
+      method: "GET",
+      headers: { "Content-Type": " application/json" },
+    });
+    return sessions.status === 200
+      ? ((await sessions.json()) as Session[])
+      : null;
   }
 
   async getSessionById(sessionId: string) {
-    const sessions = (await this.getSessions())!;
-    return sessions.find((session) => session.id === sessionId);
+    // const sessions = (await this.getSessions())!;
+    // return sessions.find((session) => session.id === sessionId);
+
+    const session = await fetch(`/api/sessions/id/${sessionId}`, {
+      method: "GET",
+      headers: { "Content-Type": " application/json" },
+    });
+    return session.status === 200 ? ((await session.json()) as Session) : null;
   }
 
   async getSessionByCode(code: string) {
-    const sessions = (await this.getSessions())!;
-    return sessions.find((session) => session.code === code);
+    // const sessions = (await this.getSessions())!;
+    // return sessions.find((session) => session.code === code);
+
+    const session = await fetch(`/api/sessions/code/${code}`, {
+      method: "GET",
+      headers: { "Content-Type": " application/json" },
+    });
+    return session.status === 200 ? ((await session.json()) as Session) : null;
   }
 
   async startSession() {
-    const newSession: Session = {
-      id: uuidv4(),
-      code: generateCode(),
-      activityChanges: [new Date()],
-      hasEnded: false,
-    };
-    return this.LSHandler.addItem(Schema.Sessions, newSession);
+    // const newSession: Session = {
+    //   id: uuidv4(),
+    //   code: generateCode(),
+    //   activityChanges: [new Date()],
+    //   hasEnded: false,
+    // };
+    // return this.LSHandler.addItem(Schema.Sessions, newSession);
+
+    const session = await fetch(`/api/sessions`, {
+      method: "POST",
+      headers: { "Content-Type": " application/json" },
+    });
+    return session.status === 200 ? ((await session.json()) as Session) : null;
   }
 
   async toggleBreak(sessionId: string) {
-    const session = (await this.getSessionById(sessionId))!;
-    session.activityChanges.push(new Date());
-    return this.LSHandler.updateItem(Schema.Sessions, session);
+    // const session = (await this.getSessionById(sessionId))!;
+    // session.activityChanges.push(new Date());
+    // return this.LSHandler.updateItem(Schema.Sessions, session);
+
+    const session = await fetch(`/api/sessions/toggle/${sessionId}`, {
+      method: "PUT",
+      headers: { "Content-Type": " application/json" },
+    });
+    return session.status === 200 ? ((await session.json()) as Session) : null;
   }
 
   async endSession(sessionId: string) {
-    const session = (await this.getSessionById(sessionId))!;
-    session.hasEnded = true;
-    session.activityChanges.push(new Date());
-    this.LSHandler.updateItem(Schema.Sessions, session);
+    // const session = (await this.getSessionById(sessionId))!;
+    // session.hasEnded = true;
+    // session.activityChanges.push(new Date());
+    // this.LSHandler.updateItem(Schema.Sessions, session);
+
+    await fetch(`/api/sessions/end/${sessionId}`, {
+      method: "PUT",
+      headers: { "Content-Type": " application/json" },
+    });
   }
 
   async register(email: string, password: string) {
@@ -129,7 +164,7 @@ export class ClientDb {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });
-    return user.status === 200 ? user.json() : null;
+    return user.status === 200 ? await user.json() : null;
   }
 
   async logout() {

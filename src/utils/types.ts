@@ -3,6 +3,7 @@ export type Session = {
   code: string;
   activityChanges: Date[];
   hasEnded: boolean;
+  userEmails: string[];
 };
 
 export type User = {

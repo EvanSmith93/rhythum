@@ -38,6 +38,7 @@ export default function SessionDetail() {
   async function toggleBreak() {
     const db = new ClientDb();
     const newSession = await db.toggleBreak(sessionId!);
+    if (!newSession) return;
     setSession(newSession);
     if (newSession) handleMessageScheduling(db, newSession);
   }
@@ -53,6 +54,7 @@ export default function SessionDetail() {
     async function getSession() {
       const db = new ClientDb();
       const session = await db.getSessionById(sessionId!);
+      if (!session) return;
       setSession(session);
     }
 

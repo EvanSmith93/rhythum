@@ -23,7 +23,7 @@ app.get("/api/sessions", verifyAuth, async (req, res) => {
   res.send(sessions);
 });
 
-app.get("/api/sessions/:sessionId", verifyAuth, async (req, res) => {
+app.get("/api/sessions/id/:sessionId", verifyAuth, async (req, res) => {
   const session = await getSessionById(
     res.locals.user.email,
     req.params.sessionId
@@ -31,7 +31,7 @@ app.get("/api/sessions/:sessionId", verifyAuth, async (req, res) => {
   res.send(session);
 });
 
-app.get("/api/sessions/:code", verifyAuth, async (req, res) => {
+app.get("/api/sessions/code/:code", verifyAuth, async (req, res) => {
   const session = await getSessionByCode(
     res.locals.user.email,
     req.params.code
@@ -40,14 +40,14 @@ app.get("/api/sessions/:code", verifyAuth, async (req, res) => {
 });
 
 app.post("/api/sessions", verifyAuth, async (req, res) => {
-  await startSession(res.locals.user);
-  res.send({});
+  const session = await startSession(res.locals.user);
+  res.send(session);
 });
 
 app.put("/api/sessions/toggle/:sessionId", verifyAuth, async (req, res) => {
   try {
-    await toggleBreak(res.locals.user.email, req.params.sessionId);
-    res.send({});
+    const session = await toggleBreak(res.locals.user.email, req.params.sessionId);
+    res.send(session);
   } catch (error) {
     res.status(400).send({ msg: (error as Error).message });
   }
@@ -129,12 +129,14 @@ async function startSession(user: User) {
   };
   user.sessionIds.push(newSession.id);
   sessions.push(newSession);
+  return newSession;
 }
 
 async function toggleBreak(userEmail: string, sessionId: string) {
   const session = await getSessionById(userEmail, sessionId);
   if (!session) throw Error("Session does not exist");
   session.activityChanges.push(new Date());
+  return session;
 }
 
 async function endSession(userEmail: string, sessionId: string) {
