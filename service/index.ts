@@ -153,6 +153,7 @@ async function toggleBreak(userEmail: string, sessionId: string) {
 async function endSession(userEmail: string, sessionId: string) {
   const session = await getSessionById(userEmail, sessionId);
   if (!session) throw Error("Session does not exist");
+  session.activityChanges.push(new Date());
   session.hasEnded = true;
 }
 
