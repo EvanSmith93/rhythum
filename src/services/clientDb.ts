@@ -43,28 +43,28 @@ import { LSHandler } from "./LSHandler";
 //   localStorage.setItem("initialized", "true");
 // }
 
-const quotes: Quote[] = [
-  {
-    text: "Through discipline comes freedom.",
-    author: "Aristotle",
-  },
-  {
-    text: "Question everything. Learn something. Answer nothing.",
-    author: "Euripides",
-  },
-  {
-    text: "True life is lived when tiny changes occur.",
-    author: "Leo Tolstoy",
-  },
-  {
-    text: "Some people don't like change, but you need to embrace change if the alternative is disaster.",
-    author: "Elon Musk",
-  },
-  {
-    text: "If you don't know where you're going, you will probably end up somewhere else.",
-    author: "Laurence J. Peter",
-  },
-];
+// const quotes: Quote[] = [
+//   {
+//     text: "Through discipline comes freedom.",
+//     author: "Aristotle",
+//   },
+//   {
+//     text: "Question everything. Learn something. Answer nothing.",
+//     author: "Euripides",
+//   },
+//   {
+//     text: "True life is lived when tiny changes occur.",
+//     author: "Leo Tolstoy",
+//   },
+//   {
+//     text: "Some people don't like change, but you need to embrace change if the alternative is disaster.",
+//     author: "Elon Musk",
+//   },
+//   {
+//     text: "If you don't know where you're going, you will probably end up somewhere else.",
+//     author: "Laurence J. Peter",
+//   },
+// ];
 
 export class ClientDb {
   LSHandler = new LSHandler();
@@ -72,35 +72,33 @@ export class ClientDb {
   async getSessions() {
     // return this.LSHandler.getItems(Schema.Sessions);
 
-    const sessions = await fetch("/api/sessions", {
+    const res = await fetch("/api/sessions", {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });
-    return sessions.status === 200
-      ? ((await sessions.json()) as Session[])
-      : null;
+    return res.status === 200 ? ((await res.json()) as Session[]) : null;
   }
 
   async getSessionById(sessionId: string) {
     // const sessions = (await this.getSessions())!;
     // return sessions.find((session) => session.id === sessionId);
 
-    const session = await fetch(`/api/sessions/id/${sessionId}`, {
+    const res = await fetch(`/api/sessions/id/${sessionId}`, {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });
-    return session.status === 200 ? ((await session.json()) as Session) : null;
+    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async joinSession(code: string) {
     // const sessions = (await this.getSessions())!;
     // return sessions.find((session) => session.code === code);
 
-    const session = await fetch(`/api/sessions/join/${code}`, {
+    const res = await fetch(`/api/sessions/join/${code}`, {
       method: "PUT",
       headers: { "Content-Type": " application/json" },
     });
-    return session.status === 200 ? ((await session.json()) as Session) : null;
+    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async startSession() {
@@ -112,11 +110,11 @@ export class ClientDb {
     // };
     // return this.LSHandler.addItem(Schema.Sessions, newSession);
 
-    const session = await fetch(`/api/sessions`, {
+    const res = await fetch(`/api/sessions`, {
       method: "POST",
       headers: { "Content-Type": " application/json" },
     });
-    return session.status === 200 ? ((await session.json()) as Session) : null;
+    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async toggleBreak(sessionId: string) {
@@ -124,11 +122,11 @@ export class ClientDb {
     // session.activityChanges.push(new Date());
     // return this.LSHandler.updateItem(Schema.Sessions, session);
 
-    const session = await fetch(`/api/sessions/toggle/${sessionId}`, {
+    const res = await fetch(`/api/sessions/toggle/${sessionId}`, {
       method: "PUT",
       headers: { "Content-Type": " application/json" },
     });
-    return session.status === 200 ? ((await session.json()) as Session) : null;
+    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async endSession(sessionId: string) {
@@ -160,11 +158,11 @@ export class ClientDb {
   }
 
   async getCurrentUser(): Promise<User> {
-    const user = await fetch("/api/user/me", {
+    const res = await fetch("/api/user/me", {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });
-    return user.status === 200 ? await user.json() : null;
+    return res.status === 200 ? await res.json() : null;
   }
 
   async logout() {
@@ -174,8 +172,11 @@ export class ClientDb {
     });
   }
 
-  async getRandomQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    return quotes[randomIndex];
+  async getRandomQuote(): Promise<Quote> {
+    const res = await fetch("/api/quote", {
+      method: "GET",
+      headers: { "Content-Type": " application/json" },
+    });
+    return res.status === 200 ? await res.json() : null;
   }
 }

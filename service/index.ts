@@ -42,8 +42,6 @@ app.post("/api/sessions", verifyAuth, async (req, res) => {
 
 app.put("/api/sessions/join/:code", verifyAuth, async (req, res) => {
   const session = await joinSession(res.locals.user, req.params.code);
-  console.log("--- users", users);
-  console.log("--- sessions", sessions);
 
   if (session) {
     res.send(session);
@@ -71,6 +69,22 @@ app.put("/api/sessions/end/:sessionId", verifyAuth, async (req, res) => {
   } catch (error) {
     res.status(400).send({ msg: (error as Error).message });
   }
+});
+
+const errorQuote: Quote = {
+  text: "Error, could not get quote",
+  author: "Rhythum",
+};
+
+app.get("/api/quote", verifyAuth, async (req, res) => {
+  const quoteRes = await fetch("https://zenquotes.io/api/random", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const content = await quoteRes.json();
+  const quote = quoteRes.status === 200 ? convertToQuote(content) : errorQuote;
+
+  res.send(quote);
 });
 
 app.post("/api/auth", async (req, res) => {
@@ -101,10 +115,6 @@ app.delete("/api/auth", verifyAuth, async (req, res) => {
 app.get("/api/user/me", verifyAuth, async (req, res) => {
   res.send({ email: res.locals.user.email });
 });
-
-// app.get("/api/user", async (req, res) => {
-//   res.send({ email: "marta@id.com" });
-// });
 
 const port = 3000;
 app.listen(port, function () {
@@ -195,7 +205,7 @@ function clearAuthCookie(res: Response, user: User) {
   res.clearCookie("token");
 }
 
-export function generateCode() {
+function generateCode() {
   const asciiMin = 65;
   const asciiMax = 91;
 
@@ -206,6 +216,10 @@ export function generateCode() {
   });
 
   return chars.join("");
+}
+
+function convertToQuote(res: { q: string; a: string }[]): Quote {
+  return { text: res[0].q, author: res[0].a };
 }
 
 type User = {
@@ -221,4 +235,9 @@ type Session = {
   activityChanges: Date[];
   hasEnded: boolean;
   userEmails: string[];
+};
+
+type Quote = {
+  text: string;
+  author: string;
 };
