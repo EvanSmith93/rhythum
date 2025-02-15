@@ -28,7 +28,11 @@ app.get("/api/sessions/id/:sessionId", verifyAuth, async (req, res) => {
     res.locals.user.email,
     req.params.sessionId
   );
-  res.send(session);
+  if (session) {
+    res.send(session);
+  } else {
+    res.status(404).send({ msg: "Not Found" });
+  }
 });
 
 app.get("/api/sessions/code/:code", verifyAuth, async (req, res) => {
@@ -36,7 +40,11 @@ app.get("/api/sessions/code/:code", verifyAuth, async (req, res) => {
     res.locals.user.email,
     req.params.code
   );
-  res.send(session);
+  if (session) {
+    res.send(session);
+  } else {
+    res.status(404).send({ msg: "Not Found" });
+  }
 });
 
 app.post("/api/sessions", verifyAuth, async (req, res) => {
@@ -46,7 +54,10 @@ app.post("/api/sessions", verifyAuth, async (req, res) => {
 
 app.put("/api/sessions/toggle/:sessionId", verifyAuth, async (req, res) => {
   try {
-    const session = await toggleBreak(res.locals.user.email, req.params.sessionId);
+    const session = await toggleBreak(
+      res.locals.user.email,
+      req.params.sessionId
+    );
     res.send(session);
   } catch (error) {
     res.status(400).send({ msg: (error as Error).message });
