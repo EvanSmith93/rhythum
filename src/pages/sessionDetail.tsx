@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { useEffect, useMemo, useState } from "react";
-import { Quote, Session } from "../utils/types";
+import { Message, Quote, Session } from "../utils/types";
 import { ClientDb } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
@@ -20,15 +20,22 @@ export default function SessionDetail() {
     [session]
   );
 
+  async function getMessage(db: ClientDb): Promise<Message> {
+    const quote = await db.getRandomQuote();
+    setQuote(quote);
+    return {
+      title: "Ready to keep working?",
+      body: `${quote.text}\n-${quote.author}`,
+    };
+  }
+
   async function handleMessageScheduling(db: ClientDb, session: Session) {
     if (session && session.activityChanges.length % 2 === 0) {
-      const quote = await db.getRandomQuote();
-      const message = {
-        title: "Ready to keep working?",
-        body: `${quote.text}\n-${quote.author}`,
-      };
-
-      scheduleMessage(message, 15 * 60 * 1000, () => setQuote(quote));
+      scheduleMessage(
+        () => getMessage(db),
+        15 * 60 * 1000,
+        // 5 * 1000
+      );
     } else {
       clearScheduled();
       setQuote(undefined);
