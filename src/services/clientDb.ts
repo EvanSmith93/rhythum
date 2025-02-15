@@ -65,7 +65,7 @@ export class ClientDb {
   }
 
   async getCurrentUser(): Promise<User> {
-    const res = await fetch("/api/user/me", {
+    const res = await fetch("/api/auth/me", {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });
@@ -80,7 +80,7 @@ export class ClientDb {
   }
 
   async getRandomQuote(): Promise<Quote> {
-    const res = await fetch("/api/quote", {
+    const res = await fetch("/api/quotes", {
       method: "GET",
       headers: { "Content-Type": " application/json" },
     });

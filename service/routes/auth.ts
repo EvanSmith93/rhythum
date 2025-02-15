@@ -34,3 +34,7 @@ router.delete("/", verifyAuth, async (req, res) => {
   clearAuthCookie(res, res.locals.user);
   res.send({});
 });
+
+router.get("/me", verifyAuth, async (req, res) => {
+  res.send({ email: res.locals.user.email });
+});
