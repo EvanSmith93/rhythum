@@ -18,6 +18,24 @@ const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+app.get("/api/sessions", verifyAuth, async (req, res) => {
+  const sessions = await getSessions(res.locals.user.id);
+  res.send(sessions);
+});
+
+app.get("/api/sessions/:sessionId", verifyAuth, async (req, res) => {
+  const session = await getSessionById(
+    res.locals.user.id,
+    req.params.sessionId
+  );
+  res.send(session);
+});
+
+app.get("/api/sessions/:code", verifyAuth, async (req, res) => {
+  const session = await getSessionByCode(res.locals.user.id, req.params.code);
+  res.send(session);
+});
+
 app.post("/api/auth", async (req, res) => {
   if (await getUser("email", req.body.email)) {
     res.status(409).send({ msg: "Existing user" });
@@ -47,16 +65,33 @@ app.get("/api/user/me", verifyAuth, async (req, res) => {
   res.send({ email: res.locals.user.email });
 });
 
-app.get("/api/user", async (req, res) => {
-  res.send({ email: "marta@id.com" });
-});
+// app.get("/api/user", async (req, res) => {
+//   res.send({ email: "marta@id.com" });
+// });
 
 const port = 3000;
 app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
 
+// DATA AND FUNCTIONS
+
 const users: User[] = [];
+const sessions: Session[] = [];
+
+async function getSessions(userId: string) {
+  return sessions.filter((session) => session.userIds.includes(userId));
+}
+
+async function getSessionById(userId: string, sessionId: string) {
+  const userSessions = await getSessions(userId);
+  return userSessions.find((session) => session.id === sessionId) ?? null;
+}
+
+async function getSessionByCode(userId: string, code: string) {
+  const userSessions = await getSessions(userId);
+  return userSessions.find((session) => session.code === code) ?? null;
+}
 
 async function createUser(email: string, password: string) {
   const passwordHash = await hash(password, 10);
@@ -64,6 +99,7 @@ async function createUser(email: string, password: string) {
   const user: User = {
     email: email,
     password: passwordHash,
+    sessionIds: [],
   };
 
   users.push(user);
@@ -93,4 +129,13 @@ type User = {
   email: string;
   password: string;
   token?: string;
+  sessionIds: string[];
+};
+
+type Session = {
+  id: string;
+  code: string;
+  activityChanges: Date[];
+  hasEnded: boolean;
+  userIds: string[];
 };
