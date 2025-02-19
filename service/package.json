@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch index.ts",
-    "start": "tsx index.ts"
+    "start": "tsx index.ts",
+    "build": "tsc && ts-add-js-extension --dir=dist"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,12 @@
     "uuid": "^11.0.5"
   },
   "devDependencies": {
-    "@types/uuid": "^10.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.1",
+    "@types/uuid": "^10.0.0",
+    "ts-add-js-extension": "^1.6.5",
     "tsx": "^4.19.2"
   }
 }

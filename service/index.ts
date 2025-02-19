@@ -12,7 +12,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/quotes", quoteRouter);
 
-const port = 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
 app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
