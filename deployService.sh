@@ -31,11 +31,6 @@ npm --prefix service run build
 cp -rf service/dist/ build
 cp service/package*.json build
 
-# find build/service -name "*.ts" -type f -delete
-# rm -rf build/service/node_modules
-# rsync -a --exclude=node_modules service/ build/service/ # move the back end service to the target distribution
-# tsc -p build/service/tsconfig.json build/service/index.ts
-
 # Step 2
 printf "\n----> Clearing out previous distribution on the target\n"
 ssh -i "$key" ubuntu@$hostname << ENDSSH

@@ -8,6 +8,11 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(express.static("public"));
+app.use((_req, res) => {
+  res.sendFile("index.html", { root: "public" });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/quotes", quoteRouter);
