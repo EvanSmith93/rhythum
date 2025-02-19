@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import SessionCard from "../components/sessionCard";
 import { Session } from "../utils/types";
-import { ClientDb } from "../services/clientDb";
+import { useUser } from "../hooks/useUser";
+import { db } from "../services/clientDb";
 
 export default function Dashboard() {
-  const [username, setUsername] = useState("");
   const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
   const [pastSessions, setPastSessions] = useState<Session[]>([]);
+  const { user } = useUser();
 
   useEffect(() => {
     async function getData() {
-      const db = new ClientDb();
-
-      const user = db.getCurrentUser();
-      if (user) setUsername(user.username);
-
       const sessions = await db.getSessions();
       setCurrentSessions(
         sessions?.filter((session) => !session.hasEnded).reverse() ?? []
@@ -29,7 +25,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <p id="welcome">Welcome {username}</p>
+      <p id="welcome">Welcome {user?.email}</p>
 
       <h2>Current Sessions</h2>
       {currentSessions.length ? (

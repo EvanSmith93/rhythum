@@ -6,15 +6,10 @@ export default function useNotificationScheduler() {
   const [timeoutId, setTimeoutId] = useState<number | undefined>();
   const { sendNotification } = useNotification();
 
-  function scheduleMessage(
-    message: Message,
-    time: number,
-    callback?: () => void
-  ) {
+  function scheduleMessage(getMessage: () => Promise<Message>, time: number) {
     clearScheduled();
-    const id = setTimeout(() => {
-      sendNotification(message);
-      if (callback) callback();
+    const id = setTimeout(async () => {
+      sendNotification(await getMessage());
     }, time);
     setTimeoutId(id);
   }

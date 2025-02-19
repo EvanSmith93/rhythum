@@ -2,8 +2,8 @@ import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { useEffect, useMemo, useState } from "react";
-import { Quote, Session } from "../utils/types";
-import { ClientDb } from "../services/clientDb";
+import { Message, Quote, Session } from "../utils/types";
+import { db } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
 import SessionTimes from "../components/sessionTimes";
@@ -20,15 +20,23 @@ export default function SessionDetail() {
     [session]
   );
 
-  async function handleMessageScheduling(db: ClientDb, session: Session) {
-    if (session && session.activityChanges.length % 2 === 0) {
-      const quote = await db.getRandomQuote();
-      const message = {
-        title: "Ready to keep working?",
-        body: `${quote.text}\n-${quote.author}`,
-      };
+  async function getMessage(): Promise<Message> {
+    const quote = await db.getRandomQuote();
+    if (quote) setQuote(quote);
 
-      scheduleMessage(message, 15 * 60 * 1000, () => setQuote(quote));
+    const title = "Ready to keep working?";
+    const body = quote ? `${quote.text}\n-${quote.author}` : "";
+
+    return { title, body };
+  }
+
+  async function handleMessageScheduling(session: Session) {
+    if (session && session.activityChanges.length % 2 === 0) {
+      scheduleMessage(
+        () => getMessage(),
+        15 * 60 * 1000
+        // 5 * 1000
+      );
     } else {
       clearScheduled();
       setQuote(undefined);
@@ -36,14 +44,13 @@ export default function SessionDetail() {
   }
 
   async function toggleBreak() {
-    const db = new ClientDb();
     const newSession = await db.toggleBreak(sessionId!);
+    if (!newSession) return;
     setSession(newSession);
-    if (newSession) handleMessageScheduling(db, newSession);
+    if (newSession) handleMessageScheduling(newSession);
   }
 
   function endSession() {
-    const db = new ClientDb();
     db.endSession(sessionId!);
     clearScheduled();
     navigate("/dashboard");
@@ -51,8 +58,8 @@ export default function SessionDetail() {
 
   useEffect(() => {
     async function getSession() {
-      const db = new ClientDb();
       const session = await db.getSessionById(sessionId!);
+      if (!session) return;
       setSession(session);
     }
 

@@ -1,3 +1,10 @@
+export type User = {
+  email: string;
+  password: string;
+  token?: string;
+  sessionIds: string[];
+};
+
 export type Session = {
   id: string;
   code: string;
@@ -5,16 +12,6 @@ export type Session = {
   hasEnded: boolean;
   userEmails: string[];
 };
-
-export type User = {
-  email: string;
-  sessionIds: string[];
-};
-
-export type Message = {
-  title: string;
-  body: string;
-}
 
 export type Quote = {
   text: string;

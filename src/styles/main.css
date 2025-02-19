@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Lexend;
+  src: url(../assets/lexend.ttf);
+}
+
 * {
   font-family: "Lexend", "Arial";
 

@@ -1,21 +1,21 @@
 import { Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { ClientDb } from "../services/clientDb";
+import { db } from "../services/clientDb";
+import { useUser } from "../hooks/useUser";
 
 export default function DashboardNavbar() {
+  const { refreshUser } = useUser();
   const navigate = useNavigate();
 
   async function createSession() {
-    const db = new ClientDb();
     const session = await db.startSession();
     if (!session) return;
     navigate(`/sessions/${session.id}`);
   }
 
   async function logout() {
-    const db = new ClientDb();
     await db.logout();
-    window.location.reload();
+    refreshUser();
   }
 
   return (

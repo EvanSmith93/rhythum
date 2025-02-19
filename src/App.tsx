@@ -10,15 +10,33 @@ import "./styles/main.css";
 import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
-import { ClientDb } from "./services/clientDb";
+import { useCallback, useEffect, useState } from "react";
+import { User } from "./utils/types";
+import { UserContext } from "./hooks/useUser";
+import { db } from "./services/clientDb";
 
 function App() {
-  const db = new ClientDb();
-  const user = db.getCurrentUser();
+  const [user, setUser] = useState<User | null>(
+    JSON.parse(localStorage.getItem("user") ?? "null")
+  );
+
+  const refreshUser = useCallback(async () => {
+    const user = await db.getCurrentUser();
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+  }, []);
+
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   return (
     <BrowserRouter>
-      <Routes>{user ? AuthenticatedRoutes() : UnauthenticatedRoutes()}</Routes>
+      <UserContext.Provider value={{ user, refreshUser }}>
+        <Routes>
+          {user ? AuthenticatedRoutes() : UnauthenticatedRoutes()}
+        </Routes>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }
