@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
 import { useEffect, useMemo, useState } from "react";
 import { Message, Quote, Session } from "../utils/types";
-import { ClientDb } from "../services/clientDb";
+import { db } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
 import SessionTimes from "../components/sessionTimes";
@@ -20,7 +20,7 @@ export default function SessionDetail() {
     [session]
   );
 
-  async function getMessage(db: ClientDb): Promise<Message> {
+  async function getMessage(): Promise<Message> {
     const quote = await db.getRandomQuote();
     if (quote) setQuote(quote);
 
@@ -30,11 +30,11 @@ export default function SessionDetail() {
     return { title, body };
   }
 
-  async function handleMessageScheduling(db: ClientDb, session: Session) {
+  async function handleMessageScheduling(session: Session) {
     if (session && session.activityChanges.length % 2 === 0) {
       scheduleMessage(
-        () => getMessage(db),
-        15 * 60 * 1000,
+        () => getMessage(),
+        15 * 60 * 1000
         // 5 * 1000
       );
     } else {
@@ -44,15 +44,13 @@ export default function SessionDetail() {
   }
 
   async function toggleBreak() {
-    const db = new ClientDb();
     const newSession = await db.toggleBreak(sessionId!);
     if (!newSession) return;
     setSession(newSession);
-    if (newSession) handleMessageScheduling(db, newSession);
+    if (newSession) handleMessageScheduling(newSession);
   }
 
   function endSession() {
-    const db = new ClientDb();
     db.endSession(sessionId!);
     clearScheduled();
     navigate("/dashboard");
@@ -60,7 +58,6 @@ export default function SessionDetail() {
 
   useEffect(() => {
     async function getSession() {
-      const db = new ClientDb();
       const session = await db.getSessionById(sessionId!);
       if (!session) return;
       setSession(session);

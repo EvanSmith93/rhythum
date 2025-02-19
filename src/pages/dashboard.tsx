@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import SessionCard from "../components/sessionCard";
 import { Session } from "../utils/types";
-import { ClientDb } from "../services/clientDb";
 import { useUser } from "../hooks/useUser";
+import { db } from "../services/clientDb";
 
 export default function Dashboard() {
   const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
@@ -11,8 +11,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function getData() {
-      const db = new ClientDb();
-
       const sessions = await db.getSessions();
       setCurrentSessions(
         sessions?.filter((session) => !session.hasEnded).reverse() ?? []

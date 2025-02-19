@@ -10,10 +10,10 @@ import "./styles/main.css";
 import "./styles/form.css";
 import "./styles/dashboard.css";
 import "./styles/session.css";
-import { ClientDb } from "./services/clientDb";
 import { useCallback, useEffect, useState } from "react";
 import { User } from "./utils/types";
 import { UserContext } from "./hooks/useUser";
+import { db } from "./services/clientDb";
 
 function App() {
   const [user, setUser] = useState<User | null>(
@@ -21,7 +21,6 @@ function App() {
   );
 
   const refreshUser = useCallback(async () => {
-    const db = new ClientDb();
     const user = await db.getCurrentUser();
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);

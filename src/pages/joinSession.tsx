@@ -2,7 +2,7 @@ import { Alert, Button, Form } from "react-bootstrap";
 import Center from "../components/center";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ClientDb } from "../services/clientDb";
+import { db } from "../services/clientDb";
 
 export default function JoinSession() {
   const navigate = useNavigate();
@@ -10,7 +10,6 @@ export default function JoinSession() {
   const [showAlert, setShowAlert] = useState(false);
 
   async function onSubmit() {
-    const db = new ClientDb();
     const session = await db.joinSession(code);
 
     if (session) {
