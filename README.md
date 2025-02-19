@@ -85,7 +85,7 @@ In this deliverable I created a React application and moved all my HTML/CSS into
 For this deliverable I added interactivity throughout the entire application. This means all the features are now fully functional for a single user. I am using local storage to store all the data, rather than a database. This means I'm also not using HTTPS or WebSockets yet. Also, I am not actually keeping track of registered users yet. Finally, I am not fetching quotes using the API yet.
 
 - [x] Components - I created new components to make the code even more modular. These include the `summaryBar` and `sessionTimes` components.
-- [x] Login - Type in a username and password (at least 3 characters each) to be logged in. Your login info will be stored using local storage and cleared when you log out.
+- [x] Login - Type in a username and password to be logged in. Your login info will be stored using local storage and cleared when you log out.
 - [x] Database - Right now I am storing all the session information within local storage, rather than the database.
 - [x] WebSocket - Currently when you stop or start a break, it updates local storage with that information. Later on I'll switch this out for WebSocket communication.
 - [x] Application logic - All of the main logic is there. The biggest piece was using all the times the user started/stopped working for a given session to construct the blue summary bar of how long they were working or not working for. There was also some logic for sending a push notification to the user after 15 minutes of being on a break.

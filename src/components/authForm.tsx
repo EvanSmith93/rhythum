@@ -45,7 +45,7 @@ export default function AuthForm({
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        <Button type="submit" disabled={password.length < 4}>
+        <Button type="submit" disabled={!password.length || !email.length}>
           {name}
         </Button>
         {bottomLink}
