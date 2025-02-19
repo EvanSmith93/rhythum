@@ -15,7 +15,7 @@ export default function Login() {
     const db = new ClientDb();
     const res = await db.login(email, password);
 
-    if (res.status === 200) {
+    if (res) {
       refreshUser();
     } else {
       alert("Incorrect Username or Password");

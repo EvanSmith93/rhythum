@@ -15,7 +15,7 @@ export default function Register() {
     const db = new ClientDb();
     const res = await db.register(email, password);
 
-    if (res.status === 200) {
+    if (res) {
       refreshUser();
     } else {
       alert("Registration Failed");

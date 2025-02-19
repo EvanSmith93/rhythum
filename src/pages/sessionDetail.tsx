@@ -22,11 +22,12 @@ export default function SessionDetail() {
 
   async function getMessage(db: ClientDb): Promise<Message> {
     const quote = await db.getRandomQuote();
-    setQuote(quote);
-    return {
-      title: "Ready to keep working?",
-      body: `${quote.text}\n-${quote.author}`,
-    };
+    if (quote) setQuote(quote);
+
+    const title = "Ready to keep working?";
+    const body = quote ? `${quote.text}\n-${quote.author}` : "";
+
+    return { title, body };
   }
 
   async function handleMessageScheduling(db: ClientDb, session: Session) {

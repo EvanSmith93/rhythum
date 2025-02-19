@@ -1,89 +1,70 @@
 import { Quote, Session, User } from "../utils/types";
 
 export class ClientDb {
-  async getSessions() {
-    const res = await fetch("/api/sessions", {
-      method: "GET",
+  private async fetchJson<T extends object>(
+    input: RequestInfo,
+    init?: RequestInit
+  ): Promise<T | null> {
+    const res = await fetch(input, {
+      ...init,
       headers: { "Content-Type": " application/json" },
     });
-    return res.status === 200 ? ((await res.json()) as Session[]) : null;
+    return res.status === 200 ? await res.json() : null;
+  }
+
+  async getSessions() {
+    return this.fetchJson<Session[]>("/api/sessions", { method: "GET" });
   }
 
   async getSessionById(sessionId: string) {
-    const res = await fetch(`/api/sessions/id/${sessionId}`, {
+    return this.fetchJson<Session>(`/api/sessions/id/${sessionId}`, {
       method: "GET",
-      headers: { "Content-Type": " application/json" },
     });
-    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async joinSession(code: string) {
-    const res = await fetch(`/api/sessions/join/${code}`, {
+    return this.fetchJson<Session>(`/api/sessions/join/${code}`, {
       method: "PUT",
-      headers: { "Content-Type": " application/json" },
     });
-    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async startSession() {
-    const res = await fetch(`/api/sessions`, {
-      method: "POST",
-      headers: { "Content-Type": " application/json" },
-    });
-    return res.status === 200 ? ((await res.json()) as Session) : null;
+    return this.fetchJson<Session>("/api/sessions", { method: "POST" });
   }
 
   async toggleBreak(sessionId: string) {
-    const res = await fetch(`/api/sessions/toggle/${sessionId}`, {
+    return this.fetchJson<Session>(`/api/sessions/toggle/${sessionId}`, {
       method: "PUT",
-      headers: { "Content-Type": " application/json" },
     });
-    return res.status === 200 ? ((await res.json()) as Session) : null;
   }
 
   async endSession(sessionId: string) {
-    await fetch(`/api/sessions/end/${sessionId}`, {
-      method: "PUT",
-      headers: { "Content-Type": " application/json" },
-    });
+    return this.fetchJson(`/api/sessions/end/${sessionId}`, { method: "PUT" });
   }
 
   async register(email: string, password: string) {
-    return await fetch("/api/auth", {
+    return this.fetchJson("/api/auth", {
       method: "POST",
-      headers: { "Content-Type": " application/json" },
       body: JSON.stringify({ email, password }),
     });
   }
 
   async login(email: string, password: string) {
-    return await fetch("/api/auth", {
+    return this.fetchJson("/api/auth", {
       method: "PUT",
-      headers: { "Content-Type": " application/json" },
       body: JSON.stringify({ email, password }),
     });
   }
 
-  async getCurrentUser(): Promise<User> {
-    const res = await fetch("/api/auth/me", {
-      method: "GET",
-      headers: { "Content-Type": " application/json" },
-    });
-    return res.status === 200 ? await res.json() : null;
+  async getCurrentUser() {
+    return this.fetchJson<User>("/api/auth/me", { method: "GET" });
   }
 
   async logout() {
-    return await fetch("/api/auth", {
-      method: "DELETE",
-      headers: { "Content-Type": " application/json" },
-    });
+    return this.fetchJson("/api/auth", { method: "DELETE" });
   }
 
-  async getRandomQuote(): Promise<Quote> {
-    const res = await fetch("/api/quotes", {
-      method: "GET",
-      headers: { "Content-Type": " application/json" },
-    });
-    return res.status === 200 ? await res.json() : null;
+  async getRandomQuote() {
+    return this.fetchJson<Quote>("/api/quotes", { method: "GET" });
   }
 }
