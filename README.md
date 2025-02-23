@@ -91,3 +91,14 @@ For this deliverable I added interactivity throughout the entire application. Th
 - [x] Application logic - All of the main logic is there. The biggest piece was using all the times the user started/stopped working for a given session to construct the blue summary bar of how long they were working or not working for. There was also some logic for sending a push notification to the user after 15 minutes of being on a break.
 - [x] Router - I separated out the routes into authenticated and unauthenticated routes. Then depending on whether the user is logged in it allow you to go to different routes.
 - [x] Hooks - I created a few hooks to manage scheduling and sending the push notifications to remind the user to keep working.
+
+## Service deliverable
+
+For this deliverable I added backend endpoints for handling authentication and getting creating, toggling, and ending sessions.
+
+ - [x] Node.js/Express HTTP service - I have an Node and Express HTTP service up and running.
+ - [x] Static middleware for frontend - I'm using Express middleware for the React frontend.
+ - [x] Calls to third party endpoints - I am calling the zenquotes.io API to get quotes to display to users when they've been taking a break for 15 minutes. I am routing the request for a quote through my own backend because of CORS restrictions.
+ - [x] Backend service endpoints - I have all the HTTP endpoints working for authentication, session, and quotes (using 3rd party API). Right now, these endpoints are all storing data using in memory objects, rather than a database. However, the functionality is all there.
+ - [x] Frontend calls service endpoints - I'm using the JavaScript fetch API to call the endpoints I wrote.
+ - [x] Supports registration, login, logout, and restricted endpoint - I have registration, login, logout all working. So, you'll need to register with a username and password before you can login. All the other endpoints rely on the user being logged in.
