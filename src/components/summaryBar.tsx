@@ -62,7 +62,9 @@ export default function SummaryBar({
         );
 
         return tooltip ? (
-          <OverlayTrigger overlay={renderTooltip}>{colorBlock}</OverlayTrigger>
+          <OverlayTrigger overlay={renderTooltip} key={index}>
+            {colorBlock}
+          </OverlayTrigger>
         ) : (
           colorBlock
         );
