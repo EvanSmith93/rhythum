@@ -5,8 +5,8 @@ import { User } from "../types";
 import { db } from "../db/db";
 
 // const users: User[] = [];
-const user = db.collection<User>("user");
-user.createIndex({ email: 1 }, { unique: true });
+const userCollection = db.collection<User>("user");
+userCollection.createIndex({ email: 1 }, { unique: true });
 
 export async function createUser(email: string, password: string) {
   const passwordHash = await hash(password, 10);
@@ -17,22 +17,22 @@ export async function createUser(email: string, password: string) {
     sessionIds: [],
   };
 
-  const id = (await user.insertOne(data)).insertedId;
-  return (await user.findOne({ _id: id }))!;
+  const id = (await userCollection.insertOne(data)).insertedId;
+  return (await userCollection.findOne({ _id: id }))!;
 }
 
 export async function getUser(field: keyof User, value: string) {
   // return value ? users.find((user) => user[field] === value) : undefined;
   if (!value) return;
-  return user.findOne({
+  return userCollection.findOne({
     [field]: value,
   });
 }
 
-export async function setAuthCookie(res: Response, currUser: User) {
+export async function setAuthCookie(res: Response, user: User) {
   const token = uuidv4();
 
-  await user.updateOne({ email: currUser.email }, { $set: { token } });
+  await userCollection.updateOne({ email: user.email }, { $set: { token } });
 
   res.cookie("token", token, {
     secure: true,
@@ -41,8 +41,8 @@ export async function setAuthCookie(res: Response, currUser: User) {
   });
 }
 
-export function clearAuthCookie(res: Response, currUser: User) {
+export function clearAuthCookie(res: Response, user: User) {
   // delete user.token;
-  user.updateOne({ email: currUser.email }, { $unset: { token: "" } });
+  userCollection.updateOne({ email: user.email }, { $unset: { token: "" } });
   res.clearCookie("token");
 }

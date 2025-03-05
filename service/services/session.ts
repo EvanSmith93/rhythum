@@ -2,15 +2,15 @@ import { ObjectId } from "mongodb";
 import { db } from "../db/db";
 import { Session, User } from "../types";
 
-const session = db.collection<Omit<Session, "_id">>("session");
+const sessionCollection = db.collection<Omit<Session, "_id">>("session");
 
 export async function getSessions(userEmail: string) {
-  const res = session.find({ userEmails: userEmail });
+  const res = sessionCollection.find({ userEmails: userEmail });
   return await res.toArray();
 }
 
 export async function getSessionById(userEmail: string, sessionId: string) {
-  return await session.findOne({
+  return await sessionCollection.findOne({
     userEmails: userEmail,
     _id: new ObjectId(sessionId),
   });
@@ -24,24 +24,27 @@ export async function startSession(user: User) {
     userEmails: [user.email],
   };
 
-  const id = (await session.insertOne(data)).insertedId.toString();
+  const id = (await sessionCollection.insertOne(data)).insertedId.toString();
   user.sessionIds.push(id);
 
   return { id };
 }
 
 export async function joinSession(user: User, code: string) {
-  const record = await session.findOne({ code });
+  const record = await sessionCollection.findOne({ code });
   if (!record) return null;
 
-  await session.updateOne({ code }, { $addToSet: { userEmails: user.email } });
+  await sessionCollection.updateOne(
+    { code },
+    { $addToSet: { userEmails: user.email } }
+  );
   user.sessionIds.push(record._id.toString());
 
   return record;
 }
 
 export async function toggleBreak(userEmail: string, sessionId: string) {
-  await session.updateOne(
+  await sessionCollection.updateOne(
     { _id: new ObjectId(sessionId) },
     { $push: { activityChanges: new Date() } }
   );
@@ -49,7 +52,7 @@ export async function toggleBreak(userEmail: string, sessionId: string) {
 }
 
 export async function endSession(userEmail: string, sessionId: string) {
-  await session.updateOne(
+  await sessionCollection.updateOne(
     { _id: new ObjectId(sessionId) },
     { $set: { hasEnded: true }, $push: { activityChanges: new Date() } }
   );
