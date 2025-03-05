@@ -8,9 +8,9 @@ export default function DashboardNavbar() {
   const navigate = useNavigate();
 
   async function createSession() {
-    const session = await db.startSession();
-    if (!session) return;
-    navigate(`/sessions/${session.id}`);
+    const data = await db.startSession();
+    if (!data) return;
+    navigate(`/sessions/${data.id}`);
   }
 
   async function logout() {

@@ -6,7 +6,7 @@ export type User = {
 };
 
 export type Session = {
-  id: string;
+  _id: string;
   code: string;
   activityChanges: Date[];
   hasEnded: boolean;

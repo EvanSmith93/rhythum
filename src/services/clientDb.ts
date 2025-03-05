@@ -29,7 +29,7 @@ export class db {
   }
 
   static async startSession() {
-    return db.fetchJson<Session>("/api/sessions", { method: "POST" });
+    return db.fetchJson<{ id: string }>("/api/sessions", { method: "POST" });
   }
 
   static async toggleBreak(sessionId: string) {

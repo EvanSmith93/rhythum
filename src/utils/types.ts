@@ -1,5 +1,5 @@
 export type Session = {
-  id: string;
+  _id: string;
   code: string;
   activityChanges: Date[];
   hasEnded: boolean;
@@ -14,7 +14,7 @@ export type User = {
 export type Message = {
   title: string;
   body: string;
-}
+};
 
 export type Quote = {
   text: string;

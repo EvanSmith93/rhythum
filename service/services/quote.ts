@@ -5,7 +5,6 @@ export const errorQuote: Quote = {
   author: "Rhythum",
 };
 
-
 export function convertToQuote(res: { q: string; a: string }[]): Quote {
   return { text: res[0].q, author: res[0].a };
 }

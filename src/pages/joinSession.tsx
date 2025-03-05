@@ -13,7 +13,7 @@ export default function JoinSession() {
     const session = await db.joinSession(code);
 
     if (session) {
-      navigate(`/sessions/${session.id}`);
+      navigate(`/sessions/${session._id}`);
     } else {
       setShowAlert(true);
     }
