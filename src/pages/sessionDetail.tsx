@@ -79,10 +79,21 @@ export default function SessionDetail() {
   return (
     <>
       <div id="top-section">
-        <div id="session-code">
+        <div id="top-left">
           <strong>Session Code</strong>
           <br />
           {session.code}
+
+          {session.userEmails.length > 1 && (
+            <>
+              <div style={{ height: "1rem" }} />
+              <strong>Users</strong>
+              <br />
+              {session.userEmails.map((email) => (
+                <div key={email}>{email}</div>
+              ))}
+            </>
+          )}
         </div>
 
         {quote && (
