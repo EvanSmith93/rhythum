@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { db } from "../db/db";
 import { Session, User } from "../types";
+import { userCollection } from "./auth";
 
 const sessionCollection = db.collection<Omit<Session, "_id">>("session");
 
@@ -25,7 +26,8 @@ export async function startSession(user: User) {
   };
 
   const id = (await sessionCollection.insertOne(data)).insertedId.toString();
-  user.sessionIds.push(id);
+  // user.sessionIds.push(id);
+  userCollection.updateOne({ email: user.email }, { $push: { id } });
 
   return { id };
 }
@@ -38,7 +40,9 @@ export async function joinSession(user: User, code: string) {
     { code },
     { $addToSet: { userEmails: user.email } }
   );
-  user.sessionIds.push(record._id.toString());
+  // user.sessionIds.push(record._id.toString());
+  const id = record._id.toString();
+  userCollection.updateOne({ email: user.email }, { $addToSet: { id } });
 
   return record;
 }

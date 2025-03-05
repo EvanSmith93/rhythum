@@ -5,7 +5,7 @@ import { User } from "../types";
 import { db } from "../db/db";
 
 // const users: User[] = [];
-const userCollection = db.collection<User>("user");
+export const userCollection = db.collection<User>("user");
 userCollection.createIndex({ email: 1 }, { unique: true });
 
 export async function createUser(email: string, password: string) {
