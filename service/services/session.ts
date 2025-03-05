@@ -10,9 +10,8 @@ export async function getSessions(userEmail: string) {
   return await res.toArray();
 }
 
-export async function getSessionById(userEmail: string, sessionId: string) {
+export async function getSessionById(sessionId: string) {
   return await sessionCollection.findOne({
-    userEmails: userEmail,
     _id: new ObjectId(sessionId),
   });
 }
@@ -26,7 +25,6 @@ export async function startSession(user: User) {
   };
 
   const id = (await sessionCollection.insertOne(data)).insertedId.toString();
-  // user.sessionIds.push(id);
   userCollection.updateOne({ email: user.email }, { $push: { id } });
 
   return { id };
@@ -40,22 +38,21 @@ export async function joinSession(user: User, code: string) {
     { code },
     { $addToSet: { userEmails: user.email } }
   );
-  // user.sessionIds.push(record._id.toString());
   const id = record._id.toString();
   userCollection.updateOne({ email: user.email }, { $addToSet: { id } });
 
   return record;
 }
 
-export async function toggleBreak(userEmail: string, sessionId: string) {
+export async function toggleBreak(sessionId: string) {
   await sessionCollection.updateOne(
     { _id: new ObjectId(sessionId) },
     { $push: { activityChanges: new Date() } }
   );
-  return await getSessionById(userEmail, sessionId);
+  return await getSessionById(sessionId);
 }
 
-export async function endSession(userEmail: string, sessionId: string) {
+export async function endSession(sessionId: string) {
   await sessionCollection.updateOne(
     { _id: new ObjectId(sessionId) },
     { $set: { hasEnded: true }, $push: { activityChanges: new Date() } }

@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { User } from "../types";
 import { db } from "../db/db";
 
-// const users: User[] = [];
 export const userCollection = db.collection<User>("user");
 userCollection.createIndex({ email: 1 }, { unique: true });
 
@@ -22,7 +21,6 @@ export async function createUser(email: string, password: string) {
 }
 
 export async function getUser(field: keyof User, value: string) {
-  // return value ? users.find((user) => user[field] === value) : undefined;
   if (!value) return;
   return userCollection.findOne({
     [field]: value,
@@ -42,7 +40,6 @@ export async function setAuthCookie(res: Response, user: User) {
 }
 
 export function clearAuthCookie(res: Response, user: User) {
-  // delete user.token;
   userCollection.updateOne({ email: user.email }, { $unset: { token: "" } });
   res.clearCookie("token");
 }
