@@ -5,8 +5,8 @@ import { Session, User } from "../types";
 const session = db.collection<Omit<Session, "_id">>("session");
 
 export async function getSessions(userEmail: string) {
-  const response = session.find({ userEmails: userEmail });
-  return await response.toArray();
+  const res = session.find({ userEmails: userEmail });
+  return await res.toArray();
 }
 
 export async function getSessionById(userEmail: string, sessionId: string) {

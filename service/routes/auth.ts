@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     res.status(409).send({ msg: "Existing user" });
   } else {
     const user = await createUser(req.body.email, req.body.password);
-    setAuthCookie(res, user);
+    await setAuthCookie(res, user);
     res.send({ email: user.email });
   }
 });
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
 router.put("/", async (req, res) => {
   const user = await getUser("email", req.body.email);
   if (user && (await compare(req.body.password, user.password))) {
-    setAuthCookie(res, user);
+    await setAuthCookie(res, user);
     res.send({ email: user.email });
   } else {
     res.status(401).send({ msg: "Unauthorized" });
