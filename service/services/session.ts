@@ -37,13 +37,11 @@ export async function startSession(user: User) {
 export async function joinSession(user: User, code: string) {
   // const session = sessions.find((session) => session.code === code);
   // if (!session) return null;
-  const record = await session.updateOne(
-    { code },
-    { $addToSet: { userEmails: user.email } }
-  );
-  if (!record.upsertedId) return null;
+  const record = await session.findOne({ code });
+  if (!record) return null;
 
-  user.sessionIds.push(record.upsertedId.toString());
+  await session.updateOne({ code }, { $addToSet: { userEmails: user.email } });
+  user.sessionIds.push(record._id.toString());
 
   // if (!session.userEmails.includes(user.email)) {
   //   user.sessionIds.push(session.id);
@@ -56,10 +54,11 @@ export async function toggleBreak(userEmail: string, sessionId: string) {
   // const session = await getSessionById(userEmail, sessionId);
   // if (!session) throw Error("Session does not exist");
   // session.activityChanges.push(new Date());
-  return await session.updateOne(
+  await session.updateOne(
     { _id: new ObjectId(sessionId) },
     { $push: { activityChanges: new Date() } }
   );
+  return await getSessionById(userEmail, sessionId);
 }
 
 export async function endSession(userEmail: string, sessionId: string) {
