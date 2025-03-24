@@ -7,6 +7,7 @@ import { db } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
 import SessionTimes from "../components/sessionTimes";
+import { Trash } from "lucide-react";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
@@ -56,6 +57,12 @@ export default function SessionDetail() {
     navigate("/dashboard");
   }
 
+  function deleteSession() {
+    db.deleteSession(sessionId!);
+    clearScheduled();
+    navigate("/dashboard");
+  }
+
   useEffect(() => {
     async function getSession() {
       const session = await db.getSessionById(sessionId!);
@@ -94,6 +101,11 @@ export default function SessionDetail() {
               ))}
             </>
           )}
+        </div>
+        <div id="top-right">
+          <Button variant="outline-danger" onClick={deleteSession}>
+            <Trash />
+          </Button>
         </div>
 
         {quote && (

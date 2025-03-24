@@ -42,6 +42,10 @@ export class db {
     return db.fetchJson(`/api/sessions/end/${sessionId}`, { method: "PUT" });
   }
 
+  static async deleteSession(sessionId: string) {
+    return db.fetchJson(`/api/sessions/${sessionId}`, { method: "DELETE" });
+  }
+
   static async register(email: string, password: string) {
     return db.fetchJson("/api/auth", {
       method: "POST",

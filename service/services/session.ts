@@ -59,11 +59,16 @@ export async function endSession(sessionId: string) {
   );
 }
 
+export async function deleteSession(sessionId: string) {
+  await sessionCollection.deleteOne({ _id: new ObjectId(sessionId) });
+}
+
 function generateCode() {
   const asciiMin = 65;
   const asciiMax = 91;
+  const codeLength = 6;
 
-  const chars = [...Array(5).keys()].map(() => {
+  const chars = [...Array(codeLength).keys()].map(() => {
     const asciiChar =
       asciiMin + Math.floor(Math.random() * (asciiMax - asciiMin));
     return String.fromCharCode(asciiChar);

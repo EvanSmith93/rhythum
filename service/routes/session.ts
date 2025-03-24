@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyAuth } from "../middlewares/verifyAuth";
 import {
+  deleteSession,
   endSession,
   getSessionById,
   getSessions,
@@ -52,6 +53,15 @@ router.put("/toggle/:sessionId", verifyAuth, async (req, res) => {
 router.put("/end/:sessionId", verifyAuth, async (req, res) => {
   try {
     await endSession(req.params.sessionId);
+    res.send({});
+  } catch (error) {
+    res.status(400).send({ msg: (error as Error).message });
+  }
+});
+
+router.delete("/:sessionId", verifyAuth, async (req, res) => {
+  try {
+    await deleteSession(req.params.sessionId);
     res.send({});
   } catch (error) {
     res.status(400).send({ msg: (error as Error).message });

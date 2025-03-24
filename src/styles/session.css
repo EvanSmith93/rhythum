@@ -8,7 +8,13 @@
 
 #top-left {
   position: absolute;
-  left: 1rem;
+  left: 2rem;
+  max-width: 25%;
+}
+
+#top-right {
+  position: absolute;
+  right: 2rem;
   max-width: 25%;
 }
 
