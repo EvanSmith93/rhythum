@@ -102,3 +102,9 @@ For this deliverable I added backend endpoints for handling authentication and g
  - [x] Backend service endpoints - I have all the HTTP endpoints working for authentication, session, and quotes (using 3rd party API). Right now, these endpoints are all storing data using in memory objects, rather than a database. However, the functionality is all there.
  - [x] Frontend calls service endpoints - I'm using the JavaScript fetch API to call the endpoints I wrote.
  - [x] Supports registration, login, logout, and restricted endpoint - I have registration, login, logout all working. So, you'll need to register with a username and password before you can login. All the other endpoints rely on the user being logged in.
+
+## DB/Login deliverable
+In this deliverable I move the backend's data storage from in-memory objects to MongoDB.
+
+- [x] Stores data in MongoDB - I am storing all the sessions within the database. I'm using the SDK for all the CRUD operations.
+- [x] Use MongoDB to store credentials - I am also storing credentials on each user in the database. Users have a list of sessions. Each user can only view the sessions they are added to.
