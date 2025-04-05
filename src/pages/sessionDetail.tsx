@@ -54,17 +54,20 @@ export default function SessionDetail() {
 
   function endSession() {
     socketCommunicator.endSession(sessionId!);
+    // clearScheduled();
+    // navigate("/dashboard");
+  }
+
+  function onToggle(updatedSession: Session) {
+    console.log("setting session after toggle", updatedSession);
+    setSession(updatedSession);
+    if (updatedSession) handleMessageScheduling(updatedSession);
+  }
+
+  function onEnd(updatedSession: Session) {
+    setSession(updatedSession);
     clearScheduled();
-    navigate("/dashboard");
   }
-
-  function onToggle(newSession: Session) {
-    console.log("setting session after toggle", newSession);
-    setSession(newSession);
-    // if (newSession) handleMessageScheduling(newSession);
-  }
-
-  function onEnd() {}
 
   const socketCommunicator = useMemo(
     () => new SocketCommunicator({ onToggle, onEnd }),

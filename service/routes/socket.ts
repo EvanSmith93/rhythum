@@ -2,7 +2,7 @@
 // import { randomUUID } from "crypto";
 import { Server } from "http";
 import WebSocket, { WebSocketServer } from "ws";
-import { toggleBreak } from "../services/session";
+import { endSession, toggleBreak } from "../services/session";
 
 type Connection = { id?: string; sessionIds?: string[] };
 
@@ -40,8 +40,8 @@ export function socket(httpServer: Server) {
         const session = await toggleBreak(json.sessionId);
         sendToSession(json.sessionId, { action: "TOGGLE_BREAK", session });
       } else if (json.action === "END_SESSION") {
-        // const session = await endSession(json.sessionId);
-        // sendToSession(json.sessionId, { action: "END_SESSION", session });
+        const session = await endSession(json.sessionId);
+        sendToSession(json.sessionId, { action: "END_SESSION", session });
       }
 
       // socketServer.clients.forEach((client) => {

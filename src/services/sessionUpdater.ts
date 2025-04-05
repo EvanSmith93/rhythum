@@ -3,15 +3,13 @@ import { debounce } from "./helpers";
 
 export class SocketCommunicator {
   private static socket: WebSocket;
-  private onToggle: (session: Session) => void;
-  private onEnd: () => void;
 
   constructor({
     onToggle,
     onEnd,
   }: {
     onToggle: (session: Session) => void;
-    onEnd: () => void;
+    onEnd: (session: Session) => void;
   }) {
     const port = window.location.port;
     const protocol = window.location.protocol === "http:" ? "ws" : "wss";
@@ -22,8 +20,6 @@ export class SocketCommunicator {
       );
     }
 
-    this.onToggle = onToggle;
-    this.onEnd = onEnd;
     // this.socket.onopen = (event) => {
     //   this.receiveEvent(
     //     new EventMessage("Simon", GameEvent.System, { msg: "connected" })
@@ -36,16 +32,16 @@ export class SocketCommunicator {
     //   );
     // };
 
-    SocketCommunicator.socket.onmessage = async (msg: MessageEvent) => {
-      console.log(msg);
+    SocketCommunicator.socket.onmessage = async (message: MessageEvent) => {
+      console.log(message);
       try {
-        const event = JSON.parse(msg.data);
+        const event = JSON.parse(message.data);
         console.log("event", event);
 
         if (event.action === "TOGGLE_BREAK") {
           onToggle(event.session);
         } else if (event.action === "END_SESSION") {
-          return;
+          onEnd(event.session);
         }
       } catch {
         console.error("Invalid JSON");
