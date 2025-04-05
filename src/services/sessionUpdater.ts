@@ -1,6 +1,12 @@
 import { Session } from "../utils/types";
 import { debounce } from "./helpers";
 
+enum Actions {
+  SET_SESSION_IDS = "SET_SESSION_IDS",
+  TOGGLE_BREAK = "TOGGLE_BREAK",
+  END_SESSION = "END_SESSION",
+}
+
 export class SocketCommunicator {
   private static socket: WebSocket;
 
@@ -14,33 +20,28 @@ export class SocketCommunicator {
     }
 
     SocketCommunicator.socket.onmessage = async (message: MessageEvent) => {
-      try {
-        const event = JSON.parse(message.data);
-        console.log("event", event);
-        onUpdate(event.session);
-      } catch {
-        console.error("Invalid JSON");
-      }
+      const event = JSON.parse(message.data);
+      onUpdate(event.session);
     };
   }
 
   public setSessionIds = debounce((sessionIds: string[]) =>
     this.sendMessage({
-      action: "SET_SESSION_IDS",
+      action: Actions.SET_SESSION_IDS,
       sessionIds,
     })
   );
 
   public toggleBreak = debounce((sessionId: string) =>
     this.sendMessage({
-      action: "TOGGLE_BREAK",
+      action: Actions.TOGGLE_BREAK,
       sessionId,
     })
   );
 
   public endSession = debounce((sessionId: string) =>
     this.sendMessage({
-      action: "END_SESSION",
+      action: Actions.END_SESSION,
       sessionId,
     })
   );

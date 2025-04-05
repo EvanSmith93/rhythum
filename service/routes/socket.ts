@@ -6,35 +6,55 @@ import { endSession, toggleBreak } from "../services/session";
 
 type Connection = { id?: string; sessionIds?: string[] };
 
+enum Actions {
+  SET_SESSION_IDS = "SET_SESSION_IDS",
+  TOGGLE_BREAK = "TOGGLE_BREAK",
+  END_SESSION = "END_SESSION",
+}
+
 export function socket(httpServer: Server) {
   const socketServer = new WebSocketServer({ server: httpServer });
 
   socketServer.on("connection", (socket: WebSocket & Connection) => {
-    function sendToSession(sessionId: string, data: any) {
+    socket.on("message", async (data: any) => {
+      const json = JSON.parse(data);
+
+      switch (json.action) {
+        case Actions.SET_SESSION_IDS:
+          setSessionIdsEvent(json.sessionIds);
+          break;
+        case Actions.TOGGLE_BREAK:
+          toggleBreakEvent(json.sessionId);
+          break;
+        case Actions.END_SESSION:
+          endSessionEvent(json.sessionId);
+          break;
+      }
+    });
+
+    function setSessionIdsEvent(sessionIds: string[]) {
+      socket.sessionIds = sessionIds;
+    }
+
+    async function toggleBreakEvent(sessionId: string) {
+      const session = await toggleBreak(sessionId);
+      sendToSession(sessionId, { session });
+    }
+
+    async function endSessionEvent(sessionId: string) {
+      const session = await endSession(sessionId);
+      sendToSession(sessionId, { session });
+    }
+
+    function sendToSession(sessionId: string, data: object) {
       socketServer.clients.forEach((client: WebSocket & Connection) => {
-        console.log(client.sessionIds);
         if (
           client.readyState === WebSocket.OPEN &&
           client.sessionIds?.includes(sessionId)
         ) {
-          console.log("sending", sessionId, data);
           client.send(JSON.stringify(data));
         }
       });
     }
-
-    socket.on("message", async (data: any) => {
-      const json = JSON.parse(data);
-
-      if (json.action === "SET_SESSION_IDS") {
-        socket.sessionIds = json.sessionIds;
-      } else if (json.action === "TOGGLE_BREAK") {
-        const session = await toggleBreak(json.sessionId);
-        sendToSession(json.sessionId, { session });
-      } else if (json.action === "END_SESSION") {
-        const session = await endSession(json.sessionId);
-        sendToSession(json.sessionId, { session });
-      }
-    });
   });
 }

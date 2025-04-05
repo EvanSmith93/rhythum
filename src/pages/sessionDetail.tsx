@@ -36,8 +36,8 @@ export default function SessionDetail() {
     if (session && session.activityChanges.length % 2 === 0) {
       scheduleMessage(
         () => getMessage(),
-        15 * 60 * 1000
-        // 5 * 1000
+        // 15 * 60 * 1000
+        5 * 1000
       );
     } else {
       clearScheduled();
