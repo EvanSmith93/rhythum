@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Server } from "http";
 import WebSocket, { WebSocketServer } from "ws";
 import { endSession, toggleBreak } from "../services/session";
@@ -16,7 +14,7 @@ export function socket(httpServer: Server) {
   const socketServer = new WebSocketServer({ server: httpServer });
 
   socketServer.on("connection", (socket: WebSocket & Connection) => {
-    socket.on("message", async (data: any) => {
+    socket.on("message", async (data: string) => {
       const json = JSON.parse(data);
 
       switch (json.action) {
