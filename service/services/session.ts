@@ -57,6 +57,7 @@ export async function endSession(sessionId: string) {
     { _id: new ObjectId(sessionId) },
     { $set: { hasEnded: true }, $push: { activityChanges: new Date() } }
   );
+  return await getSessionById(sessionId);
 }
 
 export async function deleteSession(sessionId: string) {

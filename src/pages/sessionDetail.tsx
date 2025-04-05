@@ -8,7 +8,7 @@ import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
 import SessionTimes from "../components/sessionTimes";
 import { Trash } from "lucide-react";
-import { sessionUpdater } from "../services/sessionUpdater";
+import { SocketCommunicator } from "../services/sessionUpdater";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
@@ -46,17 +46,30 @@ export default function SessionDetail() {
   }
 
   async function toggleBreak() {
-    const newSession = await db.toggleBreak(sessionId!);
-    if (!newSession) return;
-    setSession(newSession);
-    if (newSession) handleMessageScheduling(newSession);
+    socketCommunicator.toggleBreak(sessionId!);
+    // if (!newSession) return;
+    // setSession(newSession);
+    // if (newSession) handleMessageScheduling(newSession);
   }
 
   function endSession() {
-    db.endSession(sessionId!);
+    socketCommunicator.endSession(sessionId!);
     clearScheduled();
     navigate("/dashboard");
   }
+
+  function onToggle(newSession: Session) {
+    console.log("setting session after toggle", newSession);
+    setSession(newSession);
+    // if (newSession) handleMessageScheduling(newSession);
+  }
+
+  function onEnd() {}
+
+  const socketCommunicator = useMemo(
+    () => new SocketCommunicator({ onToggle, onEnd }),
+    []
+  );
 
   function deleteSession() {
     db.deleteSession(sessionId!);
@@ -76,11 +89,11 @@ export default function SessionDetail() {
 
   useEffect(() => {
     if (sessionId) {
-      sessionUpdater.setSessionIds([sessionId]);
+      socketCommunicator.setSessionIds([sessionId]);
     }
 
     return () => {
-      sessionUpdater.setSessionIds([]);
+      socketCommunicator.setSessionIds([]);
     };
   }, []);
 

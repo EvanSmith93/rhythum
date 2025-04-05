@@ -32,15 +32,15 @@ export class db {
     return db.fetchJson<{ id: string }>("/api/sessions", { method: "POST" });
   }
 
-  static async toggleBreak(sessionId: string) {
-    return db.fetchJson<Session>(`/api/sessions/toggle/${sessionId}`, {
-      method: "PUT",
-    });
-  }
+  // static async toggleBreak(sessionId: string) {
+  //   return db.fetchJson<Session>(`/api/sessions/toggle/${sessionId}`, {
+  //     method: "PUT",
+  //   });
+  // }
 
-  static async endSession(sessionId: string) {
-    return db.fetchJson(`/api/sessions/end/${sessionId}`, { method: "PUT" });
-  }
+  // static async endSession(sessionId: string) {
+  //   return db.fetchJson(`/api/sessions/end/${sessionId}`, { method: "PUT" });
+  // }
 
   static async deleteSession(sessionId: string) {
     return db.fetchJson(`/api/sessions/${sessionId}`, { method: "DELETE" });

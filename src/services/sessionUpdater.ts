@@ -1,16 +1,29 @@
+import { Session } from "../utils/types";
 import { debounce } from "./helpers";
 
-class SessionUpdater {
-  private socket: WebSocket;
-  // private sessionIds: string[] = [];
+export class SocketCommunicator {
+  private static socket: WebSocket;
+  private onToggle: (session: Session) => void;
+  private onEnd: () => void;
 
-  constructor() {
+  constructor({
+    onToggle,
+    onEnd,
+  }: {
+    onToggle: (session: Session) => void;
+    onEnd: () => void;
+  }) {
     const port = window.location.port;
     const protocol = window.location.protocol === "http:" ? "ws" : "wss";
-    this.socket = new WebSocket(
-      `${protocol}://${window.location.hostname}:${port}/ws`
-    );
 
+    if (!SocketCommunicator.socket) {
+      SocketCommunicator.socket = new WebSocket(
+        `${protocol}://${window.location.hostname}:${port}/ws`
+      );
+    }
+
+    this.onToggle = onToggle;
+    this.onEnd = onEnd;
     // this.socket.onopen = (event) => {
     //   this.receiveEvent(
     //     new EventMessage("Simon", GameEvent.System, { msg: "connected" })
@@ -23,11 +36,17 @@ class SessionUpdater {
     //   );
     // };
 
-    this.socket.onmessage = async (msg: MessageEvent) => {
+    SocketCommunicator.socket.onmessage = async (msg: MessageEvent) => {
+      console.log(msg);
       try {
-        const event = JSON.parse(await msg.data.text());
-        console.log('event', event);
-        // this.receiveEvent(event);
+        const event = JSON.parse(msg.data);
+        console.log("event", event);
+
+        if (event.action === "TOGGLE_BREAK") {
+          onToggle(event.session);
+        } else if (event.action === "END_SESSION") {
+          return;
+        }
       } catch {
         console.error("Invalid JSON");
       }
@@ -36,12 +55,26 @@ class SessionUpdater {
 
   public setSessionIds = debounce((sessionIds: string[]) => {
     const message = {
-      action: "sessions",
+      action: "SET_SESSION_IDS",
       sessionIds,
     };
-    console.log(message);
-    this.socket.send(JSON.stringify(message));
+    SocketCommunicator.socket.send(JSON.stringify(message));
+  });
+
+  public toggleBreak = debounce((sessionId: string) => {
+    const message = {
+      action: "TOGGLE_BREAK",
+      sessionId,
+    };
+    console.log("sending", message);
+    SocketCommunicator.socket.send(JSON.stringify(message));
+  });
+
+  public endSession = debounce((sessionId: string) => {
+    const message = {
+      action: "END_SESSION",
+      sessionId,
+    };
+    SocketCommunicator.socket.send(JSON.stringify(message));
   });
 }
-
-export const sessionUpdater = new SessionUpdater();

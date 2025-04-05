@@ -2,6 +2,7 @@
 // import { randomUUID } from "crypto";
 import { Server } from "http";
 import WebSocket, { WebSocketServer } from "ws";
+import { toggleBreak } from "../services/session";
 
 type Connection = { id?: string; sessionIds?: string[] };
 
@@ -17,15 +18,30 @@ export function socket(httpServer: Server) {
     // socket.id = id;
     // httpServer.isAlive = true;
 
-    socket.on("message", (data: any) => {
+    function sendToSession(sessionId: string, data: any) {
+      socketServer.clients.forEach((client: WebSocket & Connection) => {
+        console.log(client.sessionIds);
+        if (
+          client.readyState === WebSocket.OPEN &&
+          client.sessionIds?.includes(sessionId)
+        ) {
+          console.log("sending", sessionId, data);
+          client.send(JSON.stringify(data));
+        }
+      });
+    }
+
+    socket.on("message", async (data: any) => {
       const json = JSON.parse(data);
 
-      if (json.action === "sessions") {
+      if (json.action === "SET_SESSION_IDS") {
         socket.sessionIds = json.sessionIds;
-      } else if (json.action === "toggle") {
-        return;
-      } else if (json.action === "end") {
-        return;
+      } else if (json.action === "TOGGLE_BREAK") {
+        const session = await toggleBreak(json.sessionId);
+        sendToSession(json.sessionId, { action: "TOGGLE_BREAK", session });
+      } else if (json.action === "END_SESSION") {
+        // const session = await endSession(json.sessionId);
+        // sendToSession(json.sessionId, { action: "END_SESSION", session });
       }
 
       // socketServer.clients.forEach((client) => {
@@ -40,18 +56,4 @@ export function socket(httpServer: Server) {
     //   httpServer.isAlive = true;
     // });
   });
-
-  // Periodically send out a ping message to make sure clients are alive
-  // setInterval(() => {
-  //   socketServer.clients.forEach((client) => {
-  //     if (httpServer.isAlive === false) {
-  //       console.log('terminating', httpServer);
-  //       return client.terminate();
-  //     }
-
-  //     console.log('still alive!');
-  //     httpServer.isAlive = false;
-  //     client.ping();
-  //   });
-  // }, 2000);
 }
