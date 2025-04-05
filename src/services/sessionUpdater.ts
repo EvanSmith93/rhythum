@@ -36,27 +36,28 @@ export class SocketCommunicator {
     };
   }
 
-  public setSessionIds = debounce((sessionIds: string[]) => {
-    const message = {
+  public setSessionIds = debounce((sessionIds: string[]) =>
+    this.sendMessage({
       action: "SET_SESSION_IDS",
       sessionIds,
-    };
-    SocketCommunicator.socket.send(JSON.stringify(message));
-  });
+    })
+  );
 
-  public toggleBreak = debounce((sessionId: string) => {
-    const message = {
+  public toggleBreak = debounce((sessionId: string) =>
+    this.sendMessage({
       action: "TOGGLE_BREAK",
       sessionId,
-    };
-    SocketCommunicator.socket.send(JSON.stringify(message));
-  });
+    })
+  );
 
-  public endSession = debounce((sessionId: string) => {
-    const message = {
+  public endSession = debounce((sessionId: string) =>
+    this.sendMessage({
       action: "END_SESSION",
       sessionId,
-    };
+    })
+  );
+
+  private sendMessage(message: object) {
     SocketCommunicator.socket.send(JSON.stringify(message));
-  });
+  }
 }
