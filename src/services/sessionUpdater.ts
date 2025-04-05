@@ -20,20 +20,7 @@ export class SocketCommunicator {
       );
     }
 
-    // this.socket.onopen = (event) => {
-    //   this.receiveEvent(
-    //     new EventMessage("Simon", GameEvent.System, { msg: "connected" })
-    //   );
-    // };
-
-    // this.socket.onclose = (event) => {
-    //   this.receiveEvent(
-    //     new EventMessage("Simon", GameEvent.System, { msg: "disconnected" })
-    //   );
-    // };
-
     SocketCommunicator.socket.onmessage = async (message: MessageEvent) => {
-      console.log(message);
       try {
         const event = JSON.parse(message.data);
         console.log("event", event);
@@ -62,7 +49,6 @@ export class SocketCommunicator {
       action: "TOGGLE_BREAK",
       sessionId,
     };
-    console.log("sending", message);
     SocketCommunicator.socket.send(JSON.stringify(message));
   });
 

@@ -59,7 +59,6 @@ export default function SessionDetail() {
   }
 
   function onToggle(updatedSession: Session) {
-    console.log("setting session after toggle", updatedSession);
     setSession(updatedSession);
     if (updatedSession) handleMessageScheduling(updatedSession);
   }
