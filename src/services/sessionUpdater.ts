@@ -4,19 +4,12 @@ import { debounce } from "./helpers";
 export class SocketCommunicator {
   private static socket: WebSocket;
 
-  constructor({
-    onToggle,
-    onEnd,
-  }: {
-    onToggle: (session: Session) => void;
-    onEnd: (session: Session) => void;
-  }) {
-    const port = window.location.port;
+  constructor(onUpdate: (session?: Session) => void) {
     const protocol = window.location.protocol === "http:" ? "ws" : "wss";
 
     if (!SocketCommunicator.socket) {
       SocketCommunicator.socket = new WebSocket(
-        `${protocol}://${window.location.hostname}:${port}/ws`
+        `${protocol}://${window.location.hostname}:${window.location.port}/ws`
       );
     }
 
@@ -24,12 +17,7 @@ export class SocketCommunicator {
       try {
         const event = JSON.parse(message.data);
         console.log("event", event);
-
-        if (event.action === "TOGGLE_BREAK") {
-          onToggle(event.session);
-        } else if (event.action === "END_SESSION") {
-          onEnd(event.session);
-        }
+        onUpdate(event.session);
       } catch {
         console.error("Invalid JSON");
       }

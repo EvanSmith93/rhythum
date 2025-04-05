@@ -30,10 +30,10 @@ export function socket(httpServer: Server) {
         socket.sessionIds = json.sessionIds;
       } else if (json.action === "TOGGLE_BREAK") {
         const session = await toggleBreak(json.sessionId);
-        sendToSession(json.sessionId, { action: "TOGGLE_BREAK", session });
+        sendToSession(json.sessionId, { session });
       } else if (json.action === "END_SESSION") {
         const session = await endSession(json.sessionId);
-        sendToSession(json.sessionId, { action: "END_SESSION", session });
+        sendToSession(json.sessionId, { session });
       }
     });
   });

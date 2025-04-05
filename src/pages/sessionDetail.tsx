@@ -58,18 +58,20 @@ export default function SessionDetail() {
     // navigate("/dashboard");
   }
 
-  function onToggle(updatedSession: Session) {
+  function onUpdate(updatedSession?: Session) {
     setSession(updatedSession);
-    if (updatedSession) handleMessageScheduling(updatedSession);
-  }
 
-  function onEnd(updatedSession: Session) {
-    setSession(updatedSession);
-    clearScheduled();
+    if (updatedSession && !updatedSession.hasEnded) {
+      console.log('scheduling');
+      handleMessageScheduling(updatedSession);
+    } else {
+      console.log('cancel schedule');
+      clearScheduled();
+    }
   }
 
   const socketCommunicator = useMemo(
-    () => new SocketCommunicator({ onToggle, onEnd }),
+    () => new SocketCommunicator(onUpdate),
     []
   );
 
