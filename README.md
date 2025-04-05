@@ -108,3 +108,11 @@ In this deliverable I move the backend's data storage from in-memory objects to 
 
 - [x] Stores data in MongoDB - I am storing all the sessions within the database. I'm using the SDK for all the CRUD operations.
 - [x] Use MongoDB to store credentials - I am also storing credentials on each user in the database. Users have a list of sessions. Each user can only view the sessions they are added to.
+
+## WebSocket deliverable
+For this deliverable I implemented WebSocket functionality for showing realtime updates when in a session with others.
+
+- [x] Backend listens for WebSocket connection - The backend listens for WebSocket requests from the client in routes/socket.ts.
+- [x] Frontend makes WebSocket connection - The frontend now makes the toggle and end session requests using WebSockets.
+- [x] Data sent over WebSocket connection - I'm sending stringified JSON objects over WebSocket of the updated session objects.
+- [x] WebSocket data displayed - After the WebSocket session data is sent to the client I'm updating the UI so the users get real-time updates.
