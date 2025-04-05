@@ -3,6 +3,7 @@ import SessionCard from "../components/sessionCard";
 import { Session } from "../utils/types";
 import { useUser } from "../hooks/useUser";
 import { db } from "../services/clientDb";
+import { sessionUpdater } from "../services/sessionUpdater";
 
 export default function Dashboard() {
   const [currentSessions, setCurrentSessions] = useState<Session[]>([]);
@@ -18,9 +19,17 @@ export default function Dashboard() {
       setPastSessions(
         sessions?.filter((session) => session.hasEnded).reverse() ?? []
       );
+
+      // if (sessions) {
+      //   sessionUpdater.setSessionIds(sessions.map((session) => session._id));
+      // }
     }
 
     getData();
+
+    // return () => {
+    //   sessionUpdater.setSessionIds([]);
+    // };
   }, []);
 
   return (

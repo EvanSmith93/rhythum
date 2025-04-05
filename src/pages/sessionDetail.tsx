@@ -8,6 +8,7 @@ import useNotificationScheduler from "../hooks/useNotificationScheduler";
 import Error404 from "./404";
 import SessionTimes from "../components/sessionTimes";
 import { Trash } from "lucide-react";
+import { sessionUpdater } from "../services/sessionUpdater";
 
 export default function SessionDetail() {
   const { sessionId } = useParams();
@@ -72,6 +73,16 @@ export default function SessionDetail() {
 
     getSession();
   }, [sessionId]);
+
+  useEffect(() => {
+    if (sessionId) {
+      sessionUpdater.setSessionIds([sessionId]);
+    }
+
+    return () => {
+      sessionUpdater.setSessionIds([]);
+    };
+  }, []);
 
   if (!session) {
     return <Error404 />;
