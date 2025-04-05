@@ -43,6 +43,7 @@ header {
 .navbar-brand:hover {
   color: var(--primary-color);
   font-size: 2.1rem;
+  cursor: pointer;
 }
 
 main {
