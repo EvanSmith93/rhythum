@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SummaryBar from "../components/summaryBar";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Message, Quote, Session } from "../utils/types";
 import { db } from "../services/clientDb";
 import useNotificationScheduler from "../hooks/useNotificationScheduler";
@@ -32,47 +32,46 @@ export default function SessionDetail() {
     return { title, body };
   }
 
-  async function handleMessageScheduling(session: Session) {
-    if (session && session.activityChanges.length % 2 === 0) {
-      scheduleMessage(
-        () => getMessage(),
-        // 15 * 60 * 1000
-        5 * 1000
-      );
-    } else {
-      clearScheduled();
-      setQuote(undefined);
-    }
-  }
+  const handleMessageScheduling = useCallback(
+    (session: Session) => {
+      if (session && session.activityChanges.length % 2 === 0) {
+        scheduleMessage(
+          () => getMessage(),
+          // 15 * 60 * 1000
+          5 * 1000
+        );
+      } else {
+        clearScheduled();
+        setQuote(undefined);
+      }
+    },
+    [clearScheduled, scheduleMessage]
+  );
 
   async function toggleBreak() {
     socketCommunicator.toggleBreak(sessionId!);
-    // if (!newSession) return;
-    // setSession(newSession);
-    // if (newSession) handleMessageScheduling(newSession);
   }
 
   function endSession() {
     socketCommunicator.endSession(sessionId!);
-    // clearScheduled();
-    // navigate("/dashboard");
   }
 
-  function onUpdate(updatedSession?: Session) {
-    setSession(updatedSession);
+  const onUpdate = useCallback(
+    (updatedSession?: Session) => {
+      setSession(updatedSession);
 
-    if (updatedSession && !updatedSession.hasEnded) {
-      console.log('scheduling');
-      handleMessageScheduling(updatedSession);
-    } else {
-      console.log('cancel schedule');
-      clearScheduled();
-    }
-  }
+      if (updatedSession && !updatedSession.hasEnded) {
+        handleMessageScheduling(updatedSession);
+      } else {
+        clearScheduled();
+      }
+    },
+    [clearScheduled, handleMessageScheduling]
+  );
 
   const socketCommunicator = useMemo(
     () => new SocketCommunicator(onUpdate),
-    []
+    [onUpdate]
   );
 
   function deleteSession() {
